@@ -1,0 +1,33 @@
+class AppRoutes {
+  static const homeScreen = "/home_screen.dart";
+  static const conversationcards = "/conversation_cards.dart";
+  static const conversation = "/conversation.dart";
+  static const moodselection = "/mood_selection.dart";
+  static const selectedmoodscreen = "/selected_mood_screen.dart";
+  static const drillscreen = "/drill_screen.dart";
+  static const excercisedashboard = "/excercise_dashboard.dart";
+  static const familymembers = "/family_members.dart";
+  static const learningcategory = "/learning_category.dart";
+  static const learningdashboard = "/learning_dashboard.dart";
+  static const childDashboard = "/child_Dashboard.dart";
+  static const addchildscreen = "/add_child_screen.dart";
+  static const addfamilyscreen = "/add_family_screen.dart";
+  static const excercisetracking = "/excercise_tracking.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+  // static const homeScreen = "/home_screen.dart";
+}

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "391556124095",
+    "project_id": "autism-support-eff9a",
+    "storage_bucket": "autism-support-eff9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:391556124095:android:fbc7b32770e0b04fb7250a",
+        "android_client_info": {
+          "package_name": "com.example.autism_support"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQGqahcWCnOItsnvgBU-TnuXByX1j2lTI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

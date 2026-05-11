@@ -1,0 +1,34 @@
+import 'package:flutter/material.dart';
+
+class ChildCard extends StatelessWidget {
+  final ImageProvider image;
+  final VoidCallback onTap;
+  const ChildCard({super.key, required this.image, required this.onTap});
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 150,
+          width: 150,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Colors.cyan,
+            image: DecorationImage(image: image, fit: BoxFit.cover),
+            border: Border.all(color: Colors.white, width: 3),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.5),
+                spreadRadius: 3,
+                blurRadius: 5,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
