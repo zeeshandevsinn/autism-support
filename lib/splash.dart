@@ -1,3 +1,4 @@
+import 'package:autism_support/utils/colors.dart';
 import 'package:flutter/material.dart';
 
 class SplashPage extends StatefulWidget {
@@ -19,6 +20,8 @@ class _SplashPageState extends State<SplashPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: commonBgColor,
+      
       body: Center(
         child: Image.asset(
           'assets/logo.png',

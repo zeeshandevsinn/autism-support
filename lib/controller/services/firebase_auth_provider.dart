@@ -27,7 +27,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       ToastUtil.showErrorToast(AppText.herSomeThingWrongTryDifferentEmail);
-      ToastUtil.showErrorToast(AppText.internetIssue + " $e");
+      ToastUtil.showErrorToast("${AppText.internetIssue} $e");
     }
     isLoading = false;
     notifyListeners();
@@ -56,7 +56,7 @@ class FirebaseAuthProvider extends ChangeNotifier {
       isLoading = false;
       notifyListeners();
       ToastUtil.showErrorToast(AppText.somethingWentWrongHere);
-      ToastUtil.showErrorToast(AppText.internetIssue + " $e");
+      ToastUtil.showErrorToast("${AppText.internetIssue} $e");
       return null;
     }
   }

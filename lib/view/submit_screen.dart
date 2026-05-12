@@ -28,6 +28,7 @@ class SubmitScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: commonBgColor,
         body: Padding(
       padding: const EdgeInsets.only(left: 12, right: 12, top: 22),
       child: Column(
@@ -139,11 +140,11 @@ class SubmitScreen extends StatelessWidget {
                 fontsize: 15,
                 color: lightBlackColor,
               ),
-              CustomText2(
+              const CustomText2(
                 text: '01:00',
                 FontWeight: FontWeight.bold,
                 fontsize: 15,
-                color: primaryColor,
+                color:parentPrimaryColor,
               ),
             ],
           ),

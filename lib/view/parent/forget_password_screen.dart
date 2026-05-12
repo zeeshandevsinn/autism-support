@@ -1,4 +1,5 @@
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/utils/toast/toast.dart';
 import 'package:autism_support/view/parent/login_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,6 +22,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
     Size s = MediaQuery.of(context).size;
 
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
         child: Column(
@@ -46,7 +48,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
               tr(AppText.forgotYourPassword)
               // "Forgot your Password?"
               ,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 fontFamily: "Roboto",
@@ -63,7 +65,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                           .enterYourEmailAddressAndWeWillShareALinkToCreateANewPassword)
                       // "Enter your email address and we will share a link to create a new password."
                       ,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff4B4B4B),
                           fontSize: 20,
                           fontFamily: "Roboto"))
@@ -129,7 +131,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         tr(AppText.send)
                         // "Send"
                         ,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600),

@@ -2,6 +2,7 @@ import 'package:autism_support/components/custom_appbar.dart';
 import 'package:autism_support/controller/services/base.dart';
 import 'package:autism_support/controller/services/firebase_manager.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,7 @@ class _ExerciseDrillScreenState extends State<ExerciseDrillScreen> {
     var height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Scaffold(
+         backgroundColor: childBgColor,
         body: StreamBuilder<QuerySnapshot>(
             stream: FirebaseFirestore.instance
                 .collection(childCollection)
@@ -104,10 +106,7 @@ class _ExerciseDrillScreenState extends State<ExerciseDrillScreen> {
                             ),
                             const SizedBox(height: 20),
                             Hero(
-                              tag: tr(AppText.question)
-                                  // 'question'
-                                  +
-                                  '$currentIndex',
+                              tag: '${tr(AppText.question)}$currentIndex',
                               child: Material(
                                 type: MaterialType.transparency,
                                 child: SizedBox(
@@ -161,10 +160,7 @@ class _ExerciseDrillScreenState extends State<ExerciseDrillScreen> {
                                       });
                                     },
                                     child: Hero(
-                                      tag: tr(AppText.option)
-                                          //  'option'
-                                          +
-                                          '$currentIndex-$index',
+                                      tag: '${tr(AppText.option)}$currentIndex-$index',
                                       child: CircleAvatar(
                                         radius: 80,
                                         backgroundColor: Colors.grey[200],
@@ -254,18 +250,13 @@ class ResultScreen extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                "$correctCount / $totalQuestions" +
-                    // " Correct"
-                    tr(AppText.correct),
+                "$correctCount / $totalQuestions${tr(AppText.correct)}",
                 style:
                     const TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               Text(
-                tr(AppText.percentage)
-                    // "Percentage:"
-                    +
-                    "${percentage.toStringAsFixed(2)}%",
+                "${tr(AppText.percentage)}${percentage.toStringAsFixed(2)}%",
                 style: const TextStyle(fontSize: 25),
               ),
               const SizedBox(height: 40),

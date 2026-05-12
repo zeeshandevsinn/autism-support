@@ -3,6 +3,7 @@ import 'package:autism_support/components/custom_add_alert.dart';
 import 'package:autism_support/components/custom_appbar.dart';
 import 'package:autism_support/controller/services/firebase_manager.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/view/parent/add_family_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -15,6 +16,7 @@ class FamilyMembers extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: parentBgColor,
       body: Column(
         children: [
           CustomAppbar(
@@ -42,10 +44,7 @@ class FamilyMembers extends StatelessWidget {
 
                 if (snapshot.hasError) {
                   return Center(
-                      child: Text(tr(AppText.somethingWentWrong)
-                          // 'Something went wrong: '
-                          +
-                          '${snapshot.error}'));
+                      child: Text('${tr(AppText.somethingWentWrong)}${snapshot.error}'));
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -92,10 +91,7 @@ class FamilyMembers extends StatelessWidget {
                                       // 'Delete Family Member'
                                       ),
                                   content:
-                                      Text(tr(AppText.areYouSureYouWantToDelete)
-                                          // 'Are you sure you want to delete '
-                                          +
-                                          '$name?'),
+                                      Text('${tr(AppText.areYouSureYouWantToDelete)}$name?'),
                                   actions: [
                                     TextButton(
                                       onPressed: () {

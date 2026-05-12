@@ -57,6 +57,7 @@ class _MoodTrackingScreenState extends State<MoodTrackingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: childBgColor,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -123,8 +124,8 @@ class _MoodTrackingScreenState extends State<MoodTrackingScreen>
                                         borderRadius: BorderRadius.circular(55),
                                       ),
                                       color: selectedIndex == index
-                                          ? secondaryColor
-                                          : secondaryColor,
+                                          ? childSecondaryColor
+                                          : childSecondaryColor.withOpacity(0.5),
                                       child: Container(
                                         width: double.infinity,
                                         height: double.infinity,
@@ -190,7 +191,7 @@ class _MoodTrackingScreenState extends State<MoodTrackingScreen>
                                         borderRadius: BorderRadius.circular(15),
                                       ),
                                       color: selectedIndex == index
-                                          ? secondaryColor
+                                          ? childSecondaryColor
                                           : Colors.white,
                                       child: Container(
                                         width: double.infinity,

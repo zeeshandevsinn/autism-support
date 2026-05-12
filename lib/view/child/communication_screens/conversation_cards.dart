@@ -1,5 +1,6 @@
 import 'package:autism_support/components/custom_appbar.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/view/child/communication_screens/conversation.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class ConversationScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: childBgColor,
       body: Column(
         children: [
           CustomAppbar(

@@ -1,5 +1,6 @@
 import 'package:autism_support/components/custom_appbar.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/utils/exercise_data.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -14,6 +15,7 @@ class ExcerciseTracking extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Column(
         children: [
           CustomAppbar(
@@ -40,10 +42,7 @@ class ExcerciseTracking extends StatelessWidget {
 
                 if (snapshot.hasError) {
                   return Center(
-                      child: Text(tr(AppText.somethingWentWrong)
-                          // 'Something went wrong:'
-                          +
-                          '${snapshot.error}'));
+                      child: Text('${tr(AppText.somethingWentWrong)}${snapshot.error}'));
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {

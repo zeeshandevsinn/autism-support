@@ -39,12 +39,11 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Column(
         children: [
           CustomAppbar(
-            title: tr(AppText.preferences)
-            //  "Preferences"
-            ,
+            title: tr(AppText.preferences),
             route: '/parent_dashboard',
           ),
           Expanded(
@@ -54,10 +53,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    tr(AppText.primaryColors)
-                    // 'Primary Colors:'
-                    ,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    tr(AppText.primaryColors),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Wrap(
                     spacing: 10,
@@ -87,10 +84,8 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    tr(AppText.secondaryColors)
-                    // 'Secondary Colors:'
-                    ,
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    tr(AppText.secondaryColors),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                   Wrap(
                     spacing: 10,
@@ -155,20 +150,14 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                               .collection(ParentCollection)
                               .doc(UserSession.getUID())
                               .update({
-                            "primaryColor": _savedPrimaryColor.toString(),
-                            "secondayColor": _savedSecondaryColor.toString()
+                            "parentPrimaryColor": _savedPrimaryColor.toString(),
+                            "parentSecondaryColor": _savedSecondaryColor.toString()
                           });
 
                           ToastUtil.showSuccessToast(
-                              tr(AppText.yourColorsHasBeenUpdate)
-                              // "Your Colors Has been Update"
-                              );
-                          primaryColor = _savedPrimaryColor!;
-                          secondaryColor = _savedSecondaryColor!;
+                              tr(AppText.yourColorsHasBeenUpdate));
                         },
-                        child: Text(tr(AppText.save)
-                            // 'Save'
-                            ),
+                        child: Text(tr(AppText.save)),
                       ),
                       const SizedBox(width: 20),
                       ElevatedButton(
@@ -186,9 +175,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                             _selectedSecondaryColor = null;
                           });
                         },
-                        child: Text(tr(AppText.cancel)
-                            // 'Cancel'
-                            ),
+                        child: Text(tr(AppText.cancel)),
                       ),
                     ],
                   ),

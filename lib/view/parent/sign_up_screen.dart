@@ -37,6 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Builder(builder: (context) {
         var pro = context.watch<FirebaseAuthProvider>();
         return pro.isLoading
@@ -62,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             )),
                         vSpace,
                         Padding(
-                          padding: EdgeInsets.only(left: 2),
+                          padding: const EdgeInsets.only(left: 2),
                           child: CustomText(
                               text: tr(AppText.name)
                               // "Name"
@@ -78,7 +79,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         vertical3Space,
                         Padding(
-                          padding: EdgeInsets.only(left: 2),
+                          padding: const EdgeInsets.only(left: 2),
                           child: CustomText(
                               text: tr(AppText.email)
                               // "Email"
@@ -91,14 +92,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           hinttext: tr(AppText.email)
                           // 'Email'
                           ,
-                          prefixIcon: Icon(
+                          prefixIcon: const Icon(
                             Icons.mail_outline_rounded,
-                            color: primaryColor,
+                            color: parentPrimaryColor,
                           ),
                         ),
                         vertical3Space,
                         Padding(
-                          padding: EdgeInsets.only(left: 2),
+                          padding: const EdgeInsets.only(left: 2),
                           child: CustomText(
                               text: tr(AppText.password)
                               // "Password"
@@ -124,10 +125,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                 !passwordController.text.contains('*') &&
                                 !passwordController.text.contains(')') &&
                                 !passwordController.text.contains('(')) {
-                              return tr(AppText.passwrodContainsMust)
-                                  //  Passwrod contains must
-                                  +
-                                  '{!@#\$%^&*()}';
+                              return '${tr(AppText.passwrodContainsMust)}{!@#\$%^&*()}';
                             }
                             return null;
                           },
@@ -152,7 +150,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                         vertical3Space,
                         Padding(
-                          padding: EdgeInsets.only(left: 2),
+                          padding: const EdgeInsets.only(left: 2),
                           child: CustomText(
                               text: tr(AppText.confirmPassword)
                               // "Confirm Password"
@@ -209,7 +207,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             height: MediaQuery.of(context).size.height * 0.07,
                             width: MediaQuery.of(context).size.height,
                             decoration: BoxDecoration(
-                                color: PurpleColor,
+                                color: parentPrimaryColor,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Center(
                                 child: Text(
@@ -243,7 +241,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   text:
                                       //  'Log in'
                                       tr(AppText.logIn),
-                                  color: primaryColor,
+                                  color: parentPrimaryColor,
                                   fontsize: 13.0),
                             )
                           ],

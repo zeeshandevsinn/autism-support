@@ -1,4 +1,5 @@
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/utils/toast/toast.dart';
 import 'package:autism_support/view/parent/forget_password_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -21,6 +22,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   Widget build(BuildContext context) {
     Size s = MediaQuery.of(context).size;
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
         child: Column(
@@ -47,7 +49,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     // "Reset password"
                     ,
                     style:
-                        TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
             SizedBox(
@@ -59,7 +61,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   tr(AppText.newPassword)
                   // "New Password"
                   ,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Color(0xff491b6d),
                       fontSize: 17,
                       fontFamily: "Roboto",
@@ -102,7 +104,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                   tr(AppText.confirmNewPassword)
                   // "Confirm New Password"
                   ,
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Color(0xff491b6d),
                       fontSize: 17,
                       fontFamily: "Roboto",
@@ -161,7 +163,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                     child: Text(
                   // "Submit"\
                   tr(AppText.submit),
-                  style: TextStyle(
+                  style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,
                       fontWeight: FontWeight.w600),

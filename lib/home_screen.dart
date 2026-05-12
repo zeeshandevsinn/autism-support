@@ -1,6 +1,7 @@
 // import 'package:autism_app/view/widgets/drawer_button.dart';
 import 'package:autism_support/controller/services/base.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/utils/toast/toast.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -23,52 +24,120 @@ class _HomeScreenState extends State<HomeScreen>
   }
 
   _showLanguagePopup() {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(
-            tr(AppText.selectLanguage),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
+  showDialog(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+        ),
+        title: Container(
+          padding: const EdgeInsets.symmetric(vertical: 8),
+          child: Row(
             children: [
-              ListTile(
-                title: Text(tr(AppText.english)),
-                onTap: () {
-                  context.setLocale(Locale('en'));
-                  Navigator.pop(context);
-                },
+              Icon(
+                Icons.translate,
+                color: parentPrimaryColor,
+                size: 28,
               ),
-              ListTile(
-                title: Text(tr(AppText.urdu)),
-                onTap: () {
-                  context.setLocale(Locale('ur'));
-                  Navigator.pop(context);
-                },
+              const SizedBox(width: 12),
+              Text(
+                tr(AppText.selectLanguage),
+                style: TextStyle(
+                  fontSize: 22,
+                  fontWeight: FontWeight.bold,
+                  color: parentPrimaryColor,
+                ),
               ),
             ],
           ),
-          actions: [
-            TextButton(
-              onPressed: () {
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildLanguageTile(
+              flag: '🇺🇸',
+              name: tr(AppText.english),
+              locale: 'en',
+              onTap: () {
+                context.setLocale(const Locale('en'));
                 Navigator.pop(context);
               },
-              child: Text(tr(AppText.cancel)),
+            ),
+            const SizedBox(height: 12),
+            _buildLanguageTile(
+              flag: '🇵🇰',
+              name: tr(AppText.urdu),
+              locale: 'ur',
+              onTap: () {
+                context.setLocale(const Locale('ur'));
+                Navigator.pop(context);
+              },
             ),
           ],
-        );
-      },
-    );
-  }
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            style: TextButton.styleFrom(
+              foregroundColor: Colors.grey.shade600,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            ),
+            child: Text(
+              tr(AppText.cancel),
+              style: const TextStyle(fontSize: 16),
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
 
+Widget _buildLanguageTile({
+  required String flag,
+  required String name,
+  required String locale,
+  required VoidCallback onTap,
+}) {
+  return InkWell(
+    onTap: onTap,
+    borderRadius: BorderRadius.circular(12),
+    child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          Text(flag, style: const TextStyle(fontSize: 32)),
+          const SizedBox(width: 16),
+          Text(
+            name,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Color(0xFF1E293B),
+            ),
+          ),
+          const Spacer(),
+          Icon(Icons.chevron_right, color: parentPrimaryColor),
+        ],
+      ),
+    ),
+  );
+}
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: commonBgColor,
+      
       appBar: AppBar(
+        backgroundColor: commonBgColor,
         title: IconButton(
-            onPressed: _showLanguagePopup, icon: Icon(Icons.menu_outlined))
+            onPressed: _showLanguagePopup, icon: const Icon(Icons.menu_outlined))
         // Icon(Icons.menu_outlined)
         ,
         //  Row(
@@ -147,7 +216,7 @@ class _HomeScreenState extends State<HomeScreen>
                     const SizedBox(height: 10),
                     Text(
                       tr(AppText.child),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),
@@ -165,9 +234,7 @@ class _HomeScreenState extends State<HomeScreen>
                           // }
                           setState(() {
                             counter--;
-                            ToastUtil.showSuccessToast(tr(AppText.click) +
-                                    '$counter' +
-                                    tr(AppText.timesToEnterParentMode)
+                            ToastUtil.showSuccessToast('${tr(AppText.click)}$counter${tr(AppText.timesToEnterParentMode)}'
 
                                 // 'Click +'$counter'+ times to enter parent mode!'
                                 );
@@ -229,7 +296,7 @@ class _HomeScreenState extends State<HomeScreen>
                     const SizedBox(height: 10),
                     Text(
                       tr(AppText.parent),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 20,
                           color: Colors.black,
                           fontWeight: FontWeight.bold),

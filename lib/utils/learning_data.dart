@@ -26,7 +26,7 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.zebra)
         // "Zebra"
         ,
-        "image": "assets/zebra.jpg",
+        "image": "assets/ZEBRA.jpg",
         "audio": "zebra.mp3"
       }
     ]
@@ -127,49 +127,49 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.monday)
         //  "Monday"
         ,
-        "image": "assets/monday.png",
+        "image": "assets/Monday.png",
         "audio": "monday.mp3"
       },
       {
         "title": tr(AppText.tuesday)
         // "Tuesday"
         ,
-        "image": "assets/tuesday.png",
+        "image": "assets/Tuesday.png",
         "audio": "tuesday.mp3"
       },
       {
         "title": tr(AppText.wednesday)
         // "Wednesday"
         ,
-        "image": "assets/wednesday.png",
+        "image": "assets/Wednesday.png",
         "audio": "wednesday.mp3"
       },
       {
         "title": tr(AppText.thursday)
         // "Thursday"
         ,
-        "image": "assets/thursday.png",
+        "image": "assets/Thursday.png",
         "audio": "thursday.mp3"
       },
       {
         "title": tr(AppText.friday)
         // "Friday"
         ,
-        "image": "assets/friday.png",
+        "image": "assets/Friday.png",
         "audio": "friday.mp3"
       },
       {
         "title": tr(AppText.saturday)
         // "Saturday"
         ,
-        "image": "assets/saturday.png",
+        "image": "assets/Saturday.png",
         "audio": "saturday.mp3"
       },
       {
         "title": tr(AppText.sunday)
         //  "Sunday"
         ,
-        "image": "assets/sunday.png",
+        "image": "assets/Sunday.png",
         "audio": "sunday.mp3"
       }
     ]
@@ -357,7 +357,7 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.orange)
         //  "Orange"
         ,
-        "image": "assets/orange.png",
+        "image": "assets/Orange.png",
         "audio": "orange.mp3"
       },
       {
@@ -457,7 +457,7 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.mushroom)
         // "Mushroom"
         ,
-        "image": "assets/mushroom.png",
+        "image": "assets/Mushroom.png",
         "audio": "mushroom.mp3"
       },
       {
@@ -478,7 +478,7 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.avacado)
         // "Avacado"
         ,
-        "image": "assets/avacado.png",
+        "image": "assets/Avacado.png",
         "audio": "avacado.mp3"
       },
       {
@@ -492,7 +492,7 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.brocollii)
         // "Brocolli"
         ,
-        "image": "assets/brocolli.png",
+        "image": "assets/Brocolli.png",
         "audio": "brocolli.mp3"
       }
     ]

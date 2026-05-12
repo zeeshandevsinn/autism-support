@@ -1,4 +1,5 @@
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:autism_support/view/parent/reset_password_screen.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ class PassworResetSuccesfullyScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     Size s = MediaQuery.of(context).size;
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Padding(
         padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
         child: Column(
@@ -35,7 +37,7 @@ class PassworResetSuccesfullyScreen extends StatelessWidget {
               tr(AppText.passwordResetSuccessfull)
               // "Password reset successfull"
               ,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 25,
                 fontWeight: FontWeight.bold,
                 fontFamily: "Roboto",
@@ -51,7 +53,7 @@ class PassworResetSuccesfullyScreen extends StatelessWidget {
                       text: tr(AppText.youCanNowLoginWithYourNewPassword)
                       // "You can now login with your new password."
                       ,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Color(0xff4B4B4B),
                           fontSize: 20,
                           fontFamily: "Roboto"))
@@ -82,7 +84,7 @@ class PassworResetSuccesfullyScreen extends StatelessWidget {
                         tr(AppText.proceed)
                         // "Proceed"
                         ,
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 20,
                             fontWeight: FontWeight.w600),

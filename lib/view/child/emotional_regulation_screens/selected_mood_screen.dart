@@ -16,6 +16,7 @@ class MoodDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: childBgColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
@@ -30,7 +31,7 @@ class MoodDetailScreen extends StatelessWidget {
             margin: const EdgeInsets.symmetric(horizontal: 40),
             padding: const EdgeInsets.all(15),
             decoration: BoxDecoration(
-              color: secondaryColor,
+              color: childSecondaryColor,
               borderRadius: BorderRadius.circular(15),
               boxShadow: const [
                 BoxShadow(
@@ -52,10 +53,7 @@ class MoodDetailScreen extends StatelessWidget {
           const SizedBox(height: 20),
           // Text below the emoji
           Text(
-            tr(AppText.todayIAmFeeling)
-                // 'Today I am feeling'
-                +
-                '$moodName',
+            '${tr(AppText.todayIAmFeeling)}$moodName',
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -71,7 +69,7 @@ class MoodDetailScreen extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 40),
               decoration: BoxDecoration(
-                color: secondaryColor, // Button color
+                color: childSecondaryColor, // Button color
                 borderRadius: BorderRadius.circular(30),
                 boxShadow: const [
                   BoxShadow(
@@ -85,7 +83,7 @@ class MoodDetailScreen extends StatelessWidget {
                 tr(AppText.ok)
                 // 'OK'
                 ,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white, // Text color
                   fontSize: 18,
                   fontWeight: FontWeight.bold,

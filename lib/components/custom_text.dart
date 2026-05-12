@@ -12,7 +12,7 @@ class CustomText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-          fontWeight: FontWeight.bold, color: primaryColor, fontSize: fontsize),
+          fontWeight: FontWeight.bold, color: parentTextColor, fontSize: fontsize),
     );
   }
 }

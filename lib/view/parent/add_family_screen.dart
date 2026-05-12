@@ -42,134 +42,137 @@ class _AddFamilyScreenState extends State<AddFamilyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
-      child: Form(
-        key: formKey,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                top: 40.0,
-              ),
-              child: Center(
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 50,
-                      backgroundImage: _image != null
-                          ? kIsWeb
-                              ? NetworkImage(Uri.parse(_image!.path).toString())
-                              : Image.file(_image!).image
-                          : null,
-                      child: _image == null
-                          ? const Center(
-                              child: Icon(Icons.person_rounded, size: 30))
-                          : null,
-                    ),
-                    Positioned(
-                        bottom: -7,
-                        right: 0,
-                        child: IconButton(
-                            onPressed: getImage,
-                            icon: Icon(
-                              Icons.add_circle_rounded,
-                              size: 33,
-                              color: primaryColor,
-                            )))
-                  ],
+    return Scaffold(
+      backgroundColor: parentBgColor,
+      body: Padding(
+        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 20),
+        child: Form(
+          key: formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  top: 40.0,
+                ),
+                child: Center(
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _image != null
+                            ? kIsWeb
+                                ? NetworkImage(Uri.parse(_image!.path).toString())
+                                : Image.file(_image!).image
+                            : null,
+                        child: _image == null
+                            ? const Center(
+                                child: Icon(Icons.person_rounded, size: 30))
+                            : null,
+                      ),
+                      Positioned(
+                          bottom: -7,
+                          right: 0,
+                          child: IconButton(
+                              onPressed: getImage,
+                              icon: Icon(
+                                Icons.add_circle_rounded,
+                                size: 33,
+                                color: parentPrimaryColor
+                              )))
+                    ],
+                  ),
                 ),
               ),
-            ),
-            vSpace,
-            Padding(
-              padding: EdgeInsets.only(left: 2),
-              child: CustomText(
-                  text: tr(AppText.name)
-                  // "Name"
-                  ,
-                  fontsize: 16.0),
-            ),
-            v2Space,
-            CustomTextfield(
-              hinttext: tr(AppText.enterName)
-              //  'Enter Name'
-              ,
-              controller: nameController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return tr(AppText.pleaseEnterYourName)
-                      // 'Please enter your name'
-                      ;
-                }
-                return null;
-              },
-            ),
-            vertical3Space,
-            Padding(
-              padding: EdgeInsets.only(left: 2),
-              child: CustomText(
-                  text: tr(AppText.relation)
-                  //  "Relation"
-                  ,
-                  fontsize: 16.0),
-            ),
-            v2Space,
-            CustomTextfield(
-              hinttext: tr(AppText.enterRelation)
-              // 'Enter Relation'
-              ,
-              controller: relationController,
-              validator: (value) {
-                if (value == null || value.isEmpty) {
-                  return tr(AppText.pleaseEnterYourRelation)
-                      //  'Please enter your relation'
-                      ;
-                }
-                return null;
-              },
-            ),
-            v2Space,
-            Align(
-              alignment: Alignment.bottomRight,
-              child: Padding(
-                padding: const EdgeInsets.only(right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    CustomButton2(
-                      text: tr(AppText.cancel)
-                      //  'Cancel'
-                      ,
-                      color: whiteColor,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    const SizedBox(width: 7),
-                    CustomButton2(
-                        text: tr(AppText.save)
-                        // 'Save'
-
+              vSpace,
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: CustomText(
+                    text: tr(AppText.name)
+                    // "Name"
+                    ,
+                    fontsize: 16.0),
+              ),
+              v2Space,
+              CustomTextfield(
+                hinttext: tr(AppText.enterName)
+                //  'Enter Name'
+                ,
+                controller: nameController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return tr(AppText.pleaseEnterYourName)
+                        // 'Please enter your name'
+                        ;
+                  }
+                  return null;
+                },
+              ),
+              vertical3Space,
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: CustomText(
+                    text: tr(AppText.relation)
+                    //  "Relation"
+                    ,
+                    fontsize: 16.0),
+              ),
+              v2Space,
+              CustomTextfield(
+                hinttext: tr(AppText.enterRelation)
+                // 'Enter Relation'
+                ,
+                controller: relationController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return tr(AppText.pleaseEnterYourRelation)
+                        //  'Please enter your relation'
+                        ;
+                  }
+                  return null;
+                },
+              ),
+              v2Space,
+              Align(
+                alignment: Alignment.bottomRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      CustomButton2(
+                        text: tr(AppText.cancel)
+                        //  'Cancel'
                         ,
                         color: whiteColor,
-                        onPressed: () async {
-                          if (formKey.currentState!.validate()) {
-                            print('family here');
-                            await FirebaseManager.addFamilyMemberDB(
-                                name: nameController.text.trim(),
-                                relation: relationController.text.trim(),
-                                image: _image!);
-                            Navigator.pop(context);
-                          }
-                        }),
-                  ],
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                      const SizedBox(width: 7),
+                      CustomButton2(
+                          text: tr(AppText.save)
+                          // 'Save'
+      
+                          ,
+                          color: whiteColor,
+                          onPressed: () async {
+                            if (formKey.currentState!.validate()) {
+                              print('family here');
+                              await FirebaseManager.addFamilyMemberDB(
+                                  name: nameController.text.trim(),
+                                  relation: relationController.text.trim(),
+                                  image: _image!);
+                              Navigator.pop(context);
+                            }
+                          }),
+                    ],
+                  ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );

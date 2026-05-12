@@ -11,7 +11,7 @@ Future addAlert(BuildContext context, Widget form, title) async {
         height: 600,
         child: AlertDialog(
             contentPadding: EdgeInsets.zero,
-            title: Text(tr(AppText.add) + '$title'),
+            title: Text('${tr(AppText.add)}$title'),
             content: form),
       );
     },

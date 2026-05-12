@@ -1,4 +1,5 @@
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -72,6 +73,7 @@ class _CareTakerState extends State<CareTaker>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: commonBgColor,
       body: SingleChildScrollView(
         child: Column(
           children: [

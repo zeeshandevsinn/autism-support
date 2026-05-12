@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+  
     super.initState();
     context.read<FirebaseAuthProvider>();
   }
@@ -35,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size s = MediaQuery.of(context).size;
     return Scaffold(
+       backgroundColor: parentBgColor,
       body: Builder(builder: (context) {
         var pro = context.watch<FirebaseAuthProvider>();
         return pro.isLoading
@@ -42,14 +43,14 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    CircularProgressIndicator.adaptive(),
-                    SizedBox(height: 20),
+                    const CircularProgressIndicator.adaptive(),
+                    const SizedBox(height: 20),
                     // Add space between the spinner and text
                     Text(
                       tr(AppText.waitingForLoggingUser)
                       // 'Waiting for Logging User...'
                       ,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w500,
                         color: Colors.black, // Set text color
@@ -78,8 +79,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           tr(AppText.welcomeBack)
                           // "Welcome Back"
                           ,
-                          style: TextStyle(
-                            color: primaryColor,
+                          style: const TextStyle(
+                            color: parentPrimaryColor, 
                             fontWeight: FontWeight.w900,
                             fontSize: 22,
                             fontFamily: "Roboto",
@@ -92,8 +93,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             tr(AppText.loginToContinue)
                             // "Login to continue"
                             ,
-                            style: TextStyle(
-                                color: primaryColor,
+                            style: const TextStyle(
+                                color: parentPrimaryColor,
                                 fontSize: 17,
                                 fontFamily: "Roboto",
                                 fontWeight: FontWeight.w600)),
@@ -106,8 +107,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               tr(AppText.emailAddress)
                               // "Email Address"
                               ,
-                              style: TextStyle(
-                                  color: primaryColor,
+                              style: const TextStyle(
+                                  color: parentPrimaryColor,
                                   fontSize: 17,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.w600)),
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: primaryColor, width: 2),
+                                      const BorderSide(color: parentPrimaryColor, width: 2),
                                   borderRadius: BorderRadius.circular(8)),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(width: 1),
@@ -160,8 +161,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               tr(AppText.password)
                               // "Password"
                               ,
-                              style: TextStyle(
-                                  color: primaryColor,
+                              style: const TextStyle(
+                                  color: parentPrimaryColor,
                                   fontSize: 17,
                                   fontFamily: "Roboto",
                                   fontWeight: FontWeight.w600)),
@@ -189,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                       : Icons.visibility_off_outlined)),
                               focusedBorder: OutlineInputBorder(
                                   borderSide:
-                                      BorderSide(color: primaryColor, width: 2),
+                                      const BorderSide(color: parentPrimaryColor, width: 2),
                                   borderRadius: BorderRadius.circular(8)),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(width: 1),
@@ -216,8 +217,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Text(
                                   // "Forget Password?"
                                   tr(AppText.forgetPassword),
-                                  style: TextStyle(
-                                      color: primaryColor,
+                                  style: const TextStyle(
+                                      color: parentPrimaryColor,
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                       fontFamily: "Roboto"))),
@@ -250,7 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: s.height * 0.07,
                             width: s.height,
                             decoration: BoxDecoration(
-                                color: primaryColor,
+                                color: parentPrimaryColor,
                                 borderRadius: BorderRadius.circular(10)),
                             child: Center(
                                 child: Text(
@@ -273,7 +274,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 tr(AppText.dontHaveAnAccount)
                                 // "Don’t have an account?"
                                 ,
-                                style: TextStyle(fontSize: 16)),
+                                style: const TextStyle(fontSize: 16)),
                             SizedBox(
                               width: s.width * 0.004,
                             ),
@@ -289,8 +290,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   tr(AppText.signUpNow)
                                   // "Sign up now"
                                   ,
-                                  style: TextStyle(
-                                      color: primaryColor,
+                                  style: const TextStyle(
+                                  color: parentPrimaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600)),
                             ),

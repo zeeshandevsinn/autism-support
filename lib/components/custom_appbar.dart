@@ -1,3 +1,4 @@
+
 import 'package:autism_support/utils/colors.dart';
 import 'package:flutter/material.dart';
 import 'custom_button.dart';
@@ -29,7 +30,7 @@ class CustomAppbar extends StatelessWidget {
             }
           },
           child: CustomButton(
-              color: primaryColor, icon: Icons.arrow_back_ios_new_rounded),
+              color: parentPrimaryColor, icon: Icons.arrow_back_ios_new_rounded),
         ),
         Center(
           child: Title(

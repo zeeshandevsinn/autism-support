@@ -21,11 +21,8 @@ class FirebaseManager {
       ToastUtil.showSuccessToast(AppText.successsfullyRegistered);
       return data;
     } catch (e) {
-      ToastUtil.showErrorToast(AppText.somethingWentWrong + "$e");
-      // setState(() {
-      //   isLoading = false;
-      // });
-      print(AppText.firebaseError + " $e");
+      ToastUtil.showErrorToast("${AppText.somethingWentWrong}$e");
+      print("${AppText.firebaseError} $e");
       return null;
     }
   }
@@ -54,7 +51,7 @@ class FirebaseManager {
     } catch (e) {
       print("Error signing out: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(AppText.errorSigningOut + ' $e')),
+        SnackBar(content: Text('${AppText.errorSigningOut} $e')),
       );
     }
   }
@@ -64,8 +61,8 @@ class FirebaseManager {
       await db.collection(ParentCollection).doc(UserSession.getUID()).set({
         "name": name,
         "email": email,
-        "primaryColor": primaryColor.toString(),
-        "secondayColor": secondaryColor.toString()
+        "primaryColor": parentPrimaryColor.toString(),
+        "secondayColor": parentSecondaryColor.toString()
       });
       return true;
     } catch (e) {

@@ -39,6 +39,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: parentBgColor,
       appBar: AppBar(
         elevation: 1,
         centerTitle: true,
@@ -53,7 +54,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               tr(AppText.yourProfile)
               // "Your Profile"
               ,
-              style: TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -78,14 +79,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           onPressed: () async {
                             getImages();
                           },
-                          icon: Icon(Icons.add_circle_rounded,
-                              color: primaryColor, size: 19))),
+                          icon: const Icon(Icons.add_circle_rounded,
+                              color: parentPrimaryColor, size: 19))),
                 ],
               ),
             ),
             vSpace,
             Padding(
-              padding: EdgeInsets.only(left: 2),
+              padding: const EdgeInsets.only(left: 2),
               child: CustomText(
                   text: tr(AppText.name)
                   // "Name"
@@ -101,7 +102,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             vertical3Space,
             Padding(
-              padding: EdgeInsets.only(left: 2),
+              padding: const EdgeInsets.only(left: 2),
               child: CustomText(
                   text: tr(AppText.email)
                   //  "Email"
@@ -113,15 +114,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
               hinttext: tr(AppText.email)
               // 'Email'
               ,
-              prefixIcon: Icon(
+              prefixIcon: const Icon(
                 Icons.mail_outline_rounded,
-                color: primaryColor,
+                color: parentPrimaryColor,
               ),
               controller: TextEditingController(),
             ),
             vertical3Space,
             Padding(
-              padding: EdgeInsets.only(left: 2),
+              padding: const EdgeInsets.only(left: 2),
               child: CustomText(
                   text: tr(AppText.phoneNo)
                   //  "Phone No"
@@ -133,9 +134,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               hinttext: tr(AppText.phoneNo)
               // 'Phone No'
               ,
-              prefixIcon: Icon(
+              prefixIcon: const Icon(
                 Icons.call_rounded,
-                color: primaryColor,
+                color: parentPrimaryColor,
               ),
               controller: TextEditingController(),
             ),
@@ -144,14 +145,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               children: [
                 IconButton(
                     onPressed: () {},
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.add_circle_rounded,
-                      color: primaryColor,
+                      color: parentPrimaryColor,
                     )),
                 ElevatedButton(
                     onPressed: () {},
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: primaryColor,
+                      backgroundColor: parentPrimaryColor,
                     ),
                     child: CustomText2(
                       text: tr(AppText.childrens)

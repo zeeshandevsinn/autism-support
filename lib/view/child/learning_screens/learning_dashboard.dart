@@ -1,6 +1,7 @@
 import 'package:autism_support/components/child_card.dart';
 import 'package:autism_support/components/custom_appbar.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:easy_localization/easy_localization.dart';
 
 import 'package:flutter/material.dart';
@@ -19,6 +20,7 @@ class _LearningDashboardState extends State<LearningDashboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+         backgroundColor: childBgColor,
         // floatingActionButton: FloatingActionButton(onPressed: (){
         //   log(learningData[1].toString());
         // },),

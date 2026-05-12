@@ -110,6 +110,7 @@
 // }
 
 import "package:autism_support/utils/app_text.dart";
+import "package:autism_support/utils/colors.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
 import "package:flutter_tts/flutter_tts.dart";
@@ -134,6 +135,7 @@ class _ConversationState extends State<Conversation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: childBgColor,
       body: Column(
         children: [
           const SizedBox(
@@ -147,22 +149,22 @@ class _ConversationState extends State<Conversation> {
           Text(
             widget.data['title'],
             style: const TextStyle(
-              fontSize: 40,
+              fontSize: 30,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          // const SizedBox(
+          //   height: 10,
+          // ),
           Text(
             tr(AppText.conversation),
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.grey,
               fontSize: 17,
             ),
           ),
           const SizedBox(
-            height: 20,
+            height: 40,
           ),
           Expanded(
             child: ListView.builder(

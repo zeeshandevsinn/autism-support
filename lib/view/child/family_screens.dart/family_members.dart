@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:autism_support/components/custom_appbar.dart';
 import 'package:autism_support/controller/services/base.dart';
 import 'package:autism_support/utils/app_text.dart';
+import 'package:autism_support/utils/colors.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ class FamilyMemberCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+       backgroundColor: childBgColor,
       body: Column(
         children: [
           CustomAppbar(
@@ -73,13 +75,13 @@ class FamilyMemberCards extends StatelessWidget {
                               width: double.infinity,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),
-                                image: imageUrl.isNotEmpty
-                                    ? DecorationImage(
-                                        image:
-                                            MemoryImage(base64Decode(imageUrl)),
-                                        fit: BoxFit.cover,
-                                      )
-                                    : null,
+                                // image: imageUrl.isNotEmpty
+                                //     ? DecorationImage(
+                                //         image:
+                                //             MemoryImage(base64Decode(imageUrl)),
+                                //         fit: BoxFit.cover,
+                                //       )
+                                //     : null,
                               ),
                             ),
                             const SizedBox(height: 8),

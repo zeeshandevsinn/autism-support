@@ -3,6 +3,9 @@ import 'package:overlay_support/overlay_support.dart';
 
 import '../colors.dart';
 
+const Color primaryColor = parentPrimaryColor;
+const Color secondaryColor = parentSecondaryColor;
+
 class ToastUtil {
   static void showSuccessToast(String message) {
     showOverlayNotification(

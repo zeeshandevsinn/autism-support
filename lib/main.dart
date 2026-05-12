@@ -28,9 +28,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(EasyLocalization(
-      supportedLocales: [Locale('ur'), Locale('en')],
+      supportedLocales: const [Locale('ur'), Locale('en')],
       path: 'assets/translations',
-      fallbackLocale: Locale('ur'),
+      fallbackLocale: const Locale('ur'),
       // assetLoader: CodegenLoader(),
       child: const OverlaySupport.global(
         child: MyApp(),

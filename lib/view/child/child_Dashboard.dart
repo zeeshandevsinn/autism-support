@@ -54,7 +54,7 @@ class _ChildDashboardState extends State<ChildDashboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: secondaryColor,
+        backgroundColor: childSecondaryColor,
         body: Padding(
           padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
           child: LayoutBuilder(
@@ -75,7 +75,7 @@ class _ChildDashboardState extends State<ChildDashboard> {
                           if (userData != null) {
                             return CustomAppbar(
                                 title: data.get('name'),
-                                color: primaryColor,
+                                color: childPrimaryColor,
                                 route: '/home',
                                 trailing: Text(
                                   data.get('current_mood')['emoji'],
@@ -87,7 +87,7 @@ class _ChildDashboardState extends State<ChildDashboard> {
                               // "Child"
                               ,
                               route: '/home',
-                              color: primaryColor,
+                              color: childPrimaryColor,
                             );
                           }
                         } else {
@@ -135,9 +135,9 @@ class _ChildDashboardState extends State<ChildDashboard> {
                               padding: const EdgeInsets.all(4.0),
                               child: Text(
                                 "${dashboard[index]['title']}",
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    color: primaryColor,
+                                style: const TextStyle(
+                                    fontSize: 25,
+                                    color: childPrimaryColor,
                                     fontWeight:
                                         FontWeight.bold), // Adjusted font size
                                 textAlign:
@@ -161,12 +161,12 @@ class _ChildDashboardState extends State<ChildDashboard> {
                         padding: const EdgeInsets.all(4.0),
                         child: Text(
                           "${dashboard[4]['title']}",
-                          style: TextStyle(
-                              fontSize: 30,
-                              color: primaryColor,
-                              fontWeight:
-                                  FontWeight.bold), // Adjusted font size
-                          textAlign: TextAlign.center, // Center align text
+                          style: const TextStyle(
+                            fontSize: 25,
+                            color: childPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
                       )
                     ],
