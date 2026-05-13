@@ -127,49 +127,49 @@ List<Map<String, dynamic>> learningData = [
         "title": tr(AppText.monday)
         //  "Monday"
         ,
-        "image": "assets/Monday.png",
+        "image": "assets/M.png",
         "audio": "monday.mp3"
       },
       {
         "title": tr(AppText.tuesday)
         // "Tuesday"
         ,
-        "image": "assets/Tuesday.png",
+        "image": "assets/T.png",
         "audio": "tuesday.mp3"
       },
       {
         "title": tr(AppText.wednesday)
         // "Wednesday"
         ,
-        "image": "assets/Wednesday.png",
+        "image": "assets/W.png",
         "audio": "wednesday.mp3"
       },
       {
         "title": tr(AppText.thursday)
         // "Thursday"
         ,
-        "image": "assets/Thursday.png",
+        "image": "assets/T.png",
         "audio": "thursday.mp3"
       },
       {
         "title": tr(AppText.friday)
         // "Friday"
         ,
-        "image": "assets/Friday.png",
+        "image": "assets/F.png",
         "audio": "friday.mp3"
       },
       {
         "title": tr(AppText.saturday)
         // "Saturday"
         ,
-        "image": "assets/Saturday.png",
+        "image": "assets/S.png",
         "audio": "saturday.mp3"
       },
       {
         "title": tr(AppText.sunday)
         //  "Sunday"
         ,
-        "image": "assets/Sunday.png",
+        "image": "assets/S.png",
         "audio": "sunday.mp3"
       }
     ]

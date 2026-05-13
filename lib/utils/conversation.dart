@@ -1,9 +1,11 @@
 import 'package:autism_support/utils/app_text.dart';
 import 'package:easy_localization/easy_localization.dart';
 
+import 'app_text.dart';
+
 List<Map<String, dynamic>> conversationData = [
   {
-    "title": tr(AppText.helloo),
+    "title": tr(AppText.hello),
     "image": "assets/hello.png",
     "data": [
       {

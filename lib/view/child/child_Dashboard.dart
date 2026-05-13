@@ -19,33 +19,23 @@ class ChildDashboard extends StatefulWidget {
 class _ChildDashboardState extends State<ChildDashboard> {
   dynamic dashboard = [
     {
-      "title": tr(AppText.learning)
-      //  "Learning"
-      ,
+      "title": tr(AppText.learning),
       "image": "assets/autism2.jpeg",
     },
     {
-      "title": tr(AppText.exercise)
-      //  "Exercise"
-      ,
+      "title": tr(AppText.exercise),
       "image": "assets/autism3.jpeg",
     },
     {
-      "title": tr(AppText.emotions)
-      //  "Emotions"
-      ,
+      "title": tr(AppText.emotions),
       "image": "assets/autism4.jpeg",
     },
     {
-      "title": tr(AppText.conversation)
-      // "Conversation"
-      ,
+      "title": tr(AppText.conversation),
       "image": "assets/autism5.jpeg",
     },
     {
-      "title": tr(AppText.familyMembers)
-      // "Family Members"
-      ,
+      "title": tr(AppText.familyMembers),
       "image": "assets/family.jpeg",
     },
   ];
@@ -54,15 +44,27 @@ class _ChildDashboardState extends State<ChildDashboard> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        backgroundColor: childSecondaryColor,
-        body: Padding(
-          padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
-          child: LayoutBuilder(
-            builder: (context, _) {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  StreamBuilder(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                childSecondaryColor,      // Soft Pink (#FDA4AF)
+                childBgColor,             // Very Light Pink-White (#FEF2F2)
+                Colors.white,
+              ],
+              stops: const [0.0, 0.5, 1.0],
+            ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+            child: LayoutBuilder(
+              builder: (context, _) {
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    StreamBuilder(
                       stream: db
                           .collection(childCollection)
                           .doc(UserSession.getUID())
@@ -74,18 +76,17 @@ class _ChildDashboardState extends State<ChildDashboard> {
                           print(userData);
                           if (userData != null) {
                             return CustomAppbar(
-                                title: data.get('name'),
-                                color: childPrimaryColor,
-                                route: '/home',
-                                trailing: Text(
-                                  data.get('current_mood')['emoji'],
-                                  style: const TextStyle(fontSize: 50),
-                                ));
+                              title: data.get('name'),
+                              color: childPrimaryColor,
+                              route: '/home',
+                              trailing: Text(
+                                data.get('current_mood')['emoji'],
+                                style: const TextStyle(fontSize: 50),
+                              ),
+                            );
                           } else {
                             return CustomAppbar(
-                              title: tr(AppText.child)
-                              // "Child"
-                              ,
+                              title: tr(AppText.child),
                               route: '/home',
                               color: childPrimaryColor,
                             );
@@ -93,87 +94,86 @@ class _ChildDashboardState extends State<ChildDashboard> {
                         } else {
                           return const CircularProgressIndicator();
                         }
-                      }),
-                  Expanded(
-                    child: GridView.builder(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 12.0, // Space between rows
-                        crossAxisSpacing: 12.0, // Space between columns
-                        childAspectRatio: 0.8, // Aspect ratio of each grid item
-                      ),
-                      itemCount: dashboard.length - 1,
-                      itemBuilder: (BuildContext context, index) {
-                        String routeName;
-                        switch (index) {
-                          case 0:
-                            routeName = '/learning';
-                            break;
-                          case 1:
-                            routeName = '/exercise';
-                            break;
-                          case 2:
-                            routeName = '/emotion';
-                            break;
-                          case 3:
-                            routeName = '/conversation';
-                            break;
-
-                          default:
-                            routeName = '/';
-                        }
-                        return Column(
-                          children: [
-                            ParentCard(
-                              image: AssetImage(dashboard[index]['image']),
-                              onTap: () {
-                                Navigator.pushNamed(context, routeName);
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Text(
-                                "${dashboard[index]['title']}",
-                                style: const TextStyle(
-                                    fontSize: 25,
-                                    color: childPrimaryColor,
-                                    fontWeight:
-                                        FontWeight.bold), // Adjusted font size
-                                textAlign:
-                                    TextAlign.center, // Center align text
-                              ),
-                            )
-                          ],
-                        );
                       },
                     ),
-                  ),
-                  Column(
-                    children: [
-                      FamilyCard(
-                        image: AssetImage(dashboard[4]['image']),
-                        onTap: () {
-                          Navigator.pushNamed(context, '/family_members');
+                    Expanded(
+                      child: GridView.builder(
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 12.0,
+                          crossAxisSpacing: 12.0,
+                          childAspectRatio: 0.8,
+                        ),
+                        itemCount: dashboard.length - 1,
+                        itemBuilder: (BuildContext context, index) {
+                          String routeName;
+                          switch (index) {
+                            case 0:
+                              routeName = '/learning';
+                              break;
+                            case 1:
+                              routeName = '/exercise';
+                              break;
+                            case 2:
+                              routeName = '/emotion';
+                              break;
+                            case 3:
+                              routeName = '/conversation';
+                              break;
+                            default:
+                              routeName = '/';
+                          }
+                          return Column(
+                            children: [
+                              ParentCard(
+                                image: AssetImage(dashboard[index]['image']),
+                                onTap: () {
+                                  Navigator.pushNamed(context, routeName);
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(4.0),
+                                child: Text(
+                                  "${dashboard[index]['title']}",
+                                  style: TextStyle(
+                                    fontSize: 25,
+                                    color: childPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              )
+                            ],
+                          );
                         },
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(4.0),
-                        child: Text(
-                          "${dashboard[4]['title']}",
-                          style: const TextStyle(
-                            fontSize: 25,
-                            color: childPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center,
+                    ),
+                    Column(
+                      children: [
+                        FamilyCard(
+                          image: AssetImage(dashboard[4]['image']),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/family_members');
+                          },
                         ),
-                      )
-                    ],
-                  ),
-                ],
-              );
-            },
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Text(
+                            "${dashboard[4]['title']}",
+                            style: TextStyle(
+                              fontSize: 25,
+                              color: childPrimaryColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                );
+              },
+            ),
           ),
         ),
       ),

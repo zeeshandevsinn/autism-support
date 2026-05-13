@@ -13,111 +13,238 @@ class FamilyMemberCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: childBgColor,
-      body: Column(
-        children: [
-          CustomAppbar(
-            title: tr(AppText.familyMembers)
-            // "Family Members"
-            ,
-            route: '/child_dashboard',
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              childSecondaryColor,
+              childBgColor,
+              Colors.white,
+            ],
+            stops: const [0.0, 0.5, 1.0],
           ),
-          Expanded(
-            child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance
-                  .collection(ParentCollection)
-                  .doc(UserSession.getUID())
-                  .collection(familyCollection)
-                  .snapshots(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(
-                      child: Text(tr(AppText.noFamilyMembersFound)
-                          // 'No family members found'
-                          ));
-                }
-                var familyMembers = snapshot.data!.docs;
-                return GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 10.0,
-                    mainAxisSpacing: 10.0,
-                    childAspectRatio: 3 / 4,
-                  ),
-                  padding: const EdgeInsets.all(10.0),
-                  itemCount: familyMembers.length,
-                  itemBuilder: (context, index) {
-                    var familyMember =
-                        familyMembers[index].data() as Map<String, dynamic>;
-
-                    var name = familyMember['name'] ?? tr(AppText.noName)
-                        // 'No Name'
-                        ;
-                    var relation =
-                        familyMember['relation'] ?? tr(AppText.noRelation)
-                        // 'No Relation'
-                        ;
-                    var imageUrl = familyMember['image'] ?? '';
-
-                    return InkWell(
-                      child: Card(
-                        elevation: 4,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              CustomAppbar(
+                title: tr(AppText.familyMembers),
+                route: '/child_dashboard',
+              ),
+              Expanded(
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection(ParentCollection)
+                      .doc(UserSession.getUID())
+                      .collection(familyCollection)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(childPrimaryColor),
                         ),
+                      );
+                    }
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return Center(
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              height: 175,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                                // image: imageUrl.isNotEmpty
-                                //     ? DecorationImage(
-                                //         image:
-                                //             MemoryImage(base64Decode(imageUrl)),
-                                //         fit: BoxFit.cover,
-                                //       )
-                                //     : null,
+                            Icon(
+                              Icons.family_restroom,
+                              size: 80,
+                              color: childPrimaryColor.withOpacity(0.3),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              tr(AppText.noFamilyMembersFound),
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.grey.shade600,
                               ),
                             ),
                             const SizedBox(height: 8),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 22,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 5),
-                                  Text(
-                                    relation,
-                                    style: TextStyle(
-                                      color: Colors.grey[600],
-                                    ),
-                                  ),
-                                ],
+                            Text(
+                              tr(AppText.familyMembers),
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Colors.grey.shade500,
                               ),
                             ),
                           ],
                         ),
+                      );
+                    }
+                    
+                    var familyMembers = snapshot.data!.docs;
+                    return GridView.builder(
+                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        crossAxisSpacing: 16.0,
+                        mainAxisSpacing: 16.0,
+                        childAspectRatio: 0.75,
                       ),
+                      padding: const EdgeInsets.all(16.0),
+                      itemCount: familyMembers.length,
+                      itemBuilder: (context, index) {
+                        var familyMember = familyMembers[index].data() as Map<String, dynamic>;
+                        var name = familyMember['name'] ?? tr(AppText.noName);
+                        var relation = familyMember['relation'] ?? tr(AppText.noRelation);
+                        var imageUrl = familyMember['image'] ?? '';
+                        
+                        return _buildFamilyCard(
+                          name: name,
+                          relation: relation,
+                          imageUrl: imageUrl,
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFamilyCard({
+    required String name,
+    required String relation,
+    required String imageUrl,
+  }) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: childPrimaryColor.withOpacity(0.15),
+            blurRadius: 12,
+            offset: const Offset(0, 4),
           ),
         ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            // Optional: Show family member details
+          },
+          borderRadius: BorderRadius.circular(20),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: [
+                  Colors.white,
+                  childSecondaryColor.withOpacity(0.2),
+                ],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: childSecondaryColor.withOpacity(0.2),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Profile Image Section
+                Expanded(
+                  flex: 3,
+                  child: Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                      image: imageUrl.isNotEmpty
+                          ? DecorationImage(
+                              image: MemoryImage(base64Decode(imageUrl)),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
+                    child: imageUrl.isEmpty
+                        ? Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  childPrimaryColor.withOpacity(0.1),
+                                  childSecondaryColor.withOpacity(0.2),
+                                ],
+                              ),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.person,
+                                size: 60,
+                                color: childPrimaryColor.withOpacity(0.5),
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
+                ),
+                // Name and Relation Section
+                Expanded(
+                  flex: 2,
+                  child: Padding(
+                    padding: const EdgeInsets.all(12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          name,
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: childPrimaryColor,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        const SizedBox(height: 4),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: childSecondaryColor.withOpacity(0.15),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Text(
+                            relation,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: childPrimaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

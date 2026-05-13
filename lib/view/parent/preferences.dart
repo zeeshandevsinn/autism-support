@@ -16,19 +16,23 @@ class PreferencesScreen extends StatefulWidget {
 
 class _PreferencesScreenState extends State<PreferencesScreen> {
   final List<Color> _primaryColors = [
+    parentPrimaryColor,
+    parentSecondaryColor,
     Colors.red,
     Colors.blue,
     Colors.green,
     Colors.yellow,
     Colors.orange,
   ];
+  
   final List<Color> _secondaryColors = [
+    parentSecondaryColor,
+    parentPrimaryColor,
     Colors.purple,
     Colors.cyan,
     Colors.teal,
     Colors.pink,
     Colors.lime,
-    Colors.black
   ];
 
   Color? _selectedPrimaryColor;
@@ -39,7 +43,7 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: parentBgColor,
+      backgroundColor: parentBgColor,
       body: Column(
         children: [
           CustomAppbar(
@@ -52,12 +56,19 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Primary Colors Section
                   Text(
                     tr(AppText.primaryColors),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                      color: parentPrimaryColor,
+                    ),
                   ),
+                  const SizedBox(height: 12),
                   Wrap(
-                    spacing: 10,
+                    spacing: 12,
+                    runSpacing: 12,
                     children: _primaryColors.map((color) {
                       return GestureDetector(
                         onTap: () {
@@ -66,29 +77,47 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                           });
                         },
                         child: Container(
-                          width: 50,
-                          height: 50,
+                          width: 55,
+                          height: 55,
                           decoration: BoxDecoration(
                             color: color,
                             border: Border.all(
                               color: _selectedPrimaryColor == color
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: 2,
+                                  ? parentPrimaryColor
+                                  : Colors.grey.shade300,
+                              width: _selectedPrimaryColor == color ? 3 : 1,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: _selectedPrimaryColor == color
+                                ? [
+                                    BoxShadow(
+                                      color: parentPrimaryColor.withOpacity(0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ]
+                                : null,
                           ),
                         ),
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Secondary Colors Section
                   Text(
                     tr(AppText.secondaryColors),
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      fontSize: 18, 
+                      fontWeight: FontWeight.bold,
+                      color: parentPrimaryColor,
+                    ),
                   ),
+                  const SizedBox(height: 12),
                   Wrap(
-                    spacing: 10,
+                    spacing: 12,
+                    runSpacing: 12,
                     children: _secondaryColors.map((color) {
                       return GestureDetector(
                         onTap: () {
@@ -97,88 +126,253 @@ class _PreferencesScreenState extends State<PreferencesScreen> {
                           });
                         },
                         child: Container(
-                          width: 50,
-                          height: 50,
+                          width: 55,
+                          height: 55,
                           decoration: BoxDecoration(
                             color: color,
                             border: Border.all(
                               color: _selectedSecondaryColor == color
-                                  ? Colors.black
-                                  : Colors.transparent,
-                              width: 2,
+                                  ? parentPrimaryColor
+                                  : Colors.grey.shade300,
+                              width: _selectedSecondaryColor == color ? 3 : 1,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: _selectedSecondaryColor == color
+                                ? [
+                                    BoxShadow(
+                                      color: parentPrimaryColor.withOpacity(0.3),
+                                      blurRadius: 8,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ]
+                                : null,
                           ),
                         ),
                       );
                     }).toList(),
                   ),
-                  const SizedBox(height: 20),
-                  // Display the saved color containers if any color is saved
-                  if (_savedPrimaryColor != null ||
-                      _savedSecondaryColor != null)
-                    Column(
-                      children: [
-                        if (_savedPrimaryColor != null)
-                          Container(
-                            padding: const EdgeInsets.all(50.0),
-                            color: _savedPrimaryColor,
+                  
+                  const SizedBox(height: 24),
+                  
+                  // Preview Section
+                  if (_savedPrimaryColor != null || _savedSecondaryColor != null)
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                          colors: [
+                            parentPrimaryColor.withOpacity(0.05),
+                            parentSecondaryColor.withOpacity(0.02),
+                          ],
+                        ),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(
+                          color: parentPrimaryColor.withOpacity(0.1),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Preview:',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: parentPrimaryColor,
+                            ),
                           ),
-                        const SizedBox(height: 10),
-                        if (_savedSecondaryColor != null)
-                          Container(
-                            padding: const EdgeInsets.all(50.0),
-                            color: _savedSecondaryColor,
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              if (_savedPrimaryColor != null)
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: _savedPrimaryColor,
+                                          borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: _savedPrimaryColor!.withOpacity(0.3),
+                                              blurRadius: 4,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Primary',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              if (_savedPrimaryColor != null && _savedSecondaryColor != null)
+                                const SizedBox(width: 12),
+                              if (_savedSecondaryColor != null)
+                                Expanded(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        height: 60,
+                                        decoration: BoxDecoration(
+                                          color: _savedSecondaryColor,
+                                          borderRadius: BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: _savedSecondaryColor!.withOpacity(0.3),
+                                              blurRadius: 4,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      Text(
+                                        'Secondary',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Colors.grey.shade600,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                            ],
                           ),
-                      ],
+                        ],
+                      ),
                     ),
-                  const Spacer(), // Pushes buttons to the bottom
+                  
+                  const Spacer(),
+                  
+                  // Gradient Buttons
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ElevatedButton(
-                        onPressed: () async {
-                          setState(() {
-                            if (_selectedPrimaryColor != null) {
-                              _savedPrimaryColor = _selectedPrimaryColor;
-                            }
-                            if (_selectedSecondaryColor != null) {
-                              _savedSecondaryColor = _selectedSecondaryColor;
-                            }
-                          });
-                          await FirebaseFirestore.instance
-                              .collection(ParentCollection)
-                              .doc(UserSession.getUID())
-                              .update({
-                            "parentPrimaryColor": _savedPrimaryColor.toString(),
-                            "parentSecondaryColor": _savedSecondaryColor.toString()
-                          });
+                      // Save Button with Gradient
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () async {
+                            setState(() {
+                              if (_selectedPrimaryColor != null) {
+                                _savedPrimaryColor = _selectedPrimaryColor;
+                              }
+                              if (_selectedSecondaryColor != null) {
+                                _savedSecondaryColor = _selectedSecondaryColor;
+                              }
+                            });
+                            
+                            if (_selectedPrimaryColor != null || _selectedSecondaryColor != null) {
+                              await FirebaseFirestore.instance
+                                  .collection(ParentCollection)
+                                  .doc(UserSession.getUID())
+                                  .update({
+                                "parentPrimaryColor": _savedPrimaryColor.toString(),
+                                "parentSecondaryColor": _savedSecondaryColor.toString()
+                              });
 
-                          ToastUtil.showSuccessToast(
-                              tr(AppText.yourColorsHasBeenUpdate));
-                        },
-                        child: Text(tr(AppText.save)),
+                              ToastUtil.showSuccessToast(
+                                tr(AppText.yourColorsHasBeenUpdate)
+                              );
+                            } else {
+                              ToastUtil.showErrorToast('Please select at least one color');
+                            }
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  parentPrimaryColor,
+                                  parentSecondaryColor,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: parentPrimaryColor.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                tr(AppText.save),
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
-                      const SizedBox(width: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          setState(() {
-                            // Cancel the saved color
-                            if (_savedPrimaryColor != null) {
-                              _savedPrimaryColor = null;
-                            }
-                            if (_savedSecondaryColor != null) {
-                              _savedSecondaryColor = null;
-                            }
-                            // Clear the selected colors
-                            _selectedPrimaryColor = null;
-                            _selectedSecondaryColor = null;
-                          });
-                        },
-                        child: Text(tr(AppText.cancel)),
+                      const SizedBox(width: 16),
+                      
+                      // Cancel Button with Border
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              // Reset to saved colors
+                              if (_savedPrimaryColor != null) {
+                                _selectedPrimaryColor = _savedPrimaryColor;
+                              } else {
+                                _selectedPrimaryColor = null;
+                              }
+                              if (_savedSecondaryColor != null) {
+                                _selectedSecondaryColor = _savedSecondaryColor;
+                              } else {
+                                _selectedSecondaryColor = null;
+                              }
+                            });
+                            ToastUtil.showErrorToast('Changes cancelled');
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: parentPrimaryColor.withOpacity(0.3),
+                                width: 1.5,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Text(
+                                tr(AppText.cancel),
+                                style: TextStyle(
+                                  color: parentPrimaryColor,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                       ),
                     ],
                   ),
+                  
+                  const SizedBox(height: 20),
                 ],
               ),
             ),

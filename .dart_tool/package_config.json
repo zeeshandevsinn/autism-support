@@ -69,7 +69,7 @@
     },
     {
       "name": "carousel_slider",
-      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/carousel_slider-5.0.0",
+      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/carousel_slider-4.2.1",
       "packageUri": "lib/",
       "languageVersion": "2.12"
     },
@@ -267,9 +267,9 @@
     },
     {
       "name": "flutter_tts",
-      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-4.0.2",
+      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/flutter_tts-3.8.5",
       "packageUri": "lib/",
-      "languageVersion": "2.15"
+      "languageVersion": "2.12"
     },
     {
       "name": "flutter_web_plugins",
@@ -471,7 +471,7 @@
     },
     {
       "name": "pinput",
-      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/pinput-5.0.0",
+      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/pinput-4.0.0",
       "packageUri": "lib/",
       "languageVersion": "2.15"
     },
@@ -540,6 +540,12 @@
       "rootUri": "file:///C:/Users/ORACLE/Desktop/Flutter/bin/cache/pkg/sky_engine",
       "packageUri": "lib/",
       "languageVersion": "3.8"
+    },
+    {
+      "name": "smart_auth",
+      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/smart_auth-2.0.0",
+      "packageUri": "lib/",
+      "languageVersion": "2.16"
     },
     {
       "name": "source_span",

@@ -24,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void initState() {
-  
     super.initState();
     context.read<FirebaseAuthProvider>();
   }
@@ -35,7 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     Size s = MediaQuery.of(context).size;
     return Scaffold(
-       backgroundColor: parentBgColor,
+      backgroundColor: parentBgColor,
       body: Builder(builder: (context) {
         var pro = context.watch<FirebaseAuthProvider>();
         return pro.isLoading
@@ -80,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           // "Welcome Back"
                           ,
                           style: const TextStyle(
-                            color: parentPrimaryColor, 
+                            color: parentPrimaryColor,
                             fontWeight: FontWeight.w900,
                             fontSize: 22,
                             fontFamily: "Roboto",
@@ -139,8 +138,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           keyboardType: TextInputType.emailAddress,
                           decoration: InputDecoration(
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: parentPrimaryColor, width: 2),
+                                  borderSide: const BorderSide(
+                                      color: parentPrimaryColor, width: 2),
                                   borderRadius: BorderRadius.circular(8)),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(width: 1),
@@ -189,8 +188,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                       ? Icons.visibility_outlined
                                       : Icons.visibility_off_outlined)),
                               focusedBorder: OutlineInputBorder(
-                                  borderSide:
-                                      const BorderSide(color: parentPrimaryColor, width: 2),
+                                  borderSide: const BorderSide(
+                                      color: parentPrimaryColor, width: 2),
                                   borderRadius: BorderRadius.circular(8)),
                               enabledBorder: OutlineInputBorder(
                                   borderSide: const BorderSide(width: 1),
@@ -251,17 +250,33 @@ class _LoginScreenState extends State<LoginScreen> {
                             height: s.height * 0.07,
                             width: s.height,
                             decoration: BoxDecoration(
-                                color: parentPrimaryColor,
-                                borderRadius: BorderRadius.circular(10)),
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  parentPrimaryColor, // Deep Navy
+                                  parentSecondaryColor, // Ocean Blue
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: parentPrimaryColor.withOpacity(0.3),
+                                  blurRadius: 8,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
                             child: Center(
-                                child: Text(
-                              // "LOG IN"
-                              tr(AppText.lOGIN),
-                              style: TextStyle(
+                              child: Text(
+                                tr(AppText.lOGIN),
+                                style: TextStyle(
                                   color: WhiteColor,
                                   fontSize: 20,
-                                  fontWeight: FontWeight.w600),
-                            )),
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                         SizedBox(
@@ -291,7 +306,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   // "Sign up now"
                                   ,
                                   style: const TextStyle(
-                                  color: parentPrimaryColor,
+                                      color: parentPrimaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600)),
                             ),

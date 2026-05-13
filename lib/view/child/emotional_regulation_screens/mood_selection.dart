@@ -17,22 +17,19 @@ class MoodTrackingScreen extends StatefulWidget {
 
 class _MoodTrackingScreenState extends State<MoodTrackingScreen>
     with SingleTickerProviderStateMixin {
-  int selectedIndex = -1; // -1 means none selected
-  bool isPressed = false;
-
-  // Animation Controller
+  int selectedIndex = -1;
   late AnimationController _animationController;
-
-  // List of mood with their respective emojis
+  late Animation<double> _scaleAnimation;
 
   @override
   void initState() {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 100),
-      lowerBound: 0.0,
-      upperBound: 0.1,
+      duration: const Duration(milliseconds: 150),
+    );
+    _scaleAnimation = Tween<double>(begin: 1.0, end: 0.95).animate(
+      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
     );
   }
 
@@ -42,191 +39,129 @@ class _MoodTrackingScreenState extends State<MoodTrackingScreen>
     super.dispose();
   }
 
-  void _onCardTap(int index) {
-    setState(() {
-      selectedIndex = index;
-    });
-
-    // Trigger the animation if needed
-  }
-
-  double _calculateScale() {
-    return 1 - _animationController.value;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       backgroundColor: childBgColor,
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            CustomAppbar(
-              title: tr(AppText.mood)
-              // "Mood"
-              ,
-              route: '/child_dashboard',
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 20.0,
-                  horizontal: 20), // Adjust this value as needed
-              child: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  if (constraints.maxWidth < 600) {
-                    // Mobile view - Use GridView with 2 columns
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2, // 2 columns on mobile
-                        childAspectRatio: 1, // Square shape
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemCount: mood.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTap: () async {
-                            await FirebaseManager.setCurrentMood(
-                                name: mood[index]['name'],
-                                emoji: mood[index]['emoji']);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => MoodDetailScreen(
-                                    emoji: mood[index]['emoji']!,
-                                    moodName: mood[index]['name']!,
-                                  ),
-                                ));
-
-                            // logic
-                          },
-                          onTapDown: (_) => _onCardTap(index),
-                          onTapUp: (_) => _animationController.reverse(),
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _calculateScale(),
-                                child: child,
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(55),
-                                      ),
-                                      color: selectedIndex == index
-                                          ? childSecondaryColor
-                                          : childSecondaryColor.withOpacity(0.5),
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Center(
-                                          child: Text(
-                                            mood[index]['emoji']!,
-                                            style: const TextStyle(
-                                              fontSize: 50,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  mood[index]['name']!,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  } else {
-                    // Tablet/Desktop view - Use GridView with 4 columns
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4, // 4 columns on tablet/desktop
-                        childAspectRatio: 1, // Square shape
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                      ),
-                      itemCount: mood.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return GestureDetector(
-                          onTapDown: (_) => _onCardTap(index),
-                          onTapUp: (_) => _animationController.reverse(),
-                          child: AnimatedBuilder(
-                            animation: _animationController,
-                            builder: (context, child) {
-                              return Transform.scale(
-                                scale: _calculateScale(),
-                                child: child,
-                              );
-                            },
-                            child: Column(
-                              children: [
-                                Expanded(
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(10),
-                                    child: Card(
-                                      elevation: 5,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(15),
-                                      ),
-                                      color: selectedIndex == index
-                                          ? childSecondaryColor
-                                          : Colors.white,
-                                      child: Container(
-                                        width: double.infinity,
-                                        height: double.infinity,
-                                        padding: const EdgeInsets.all(16.0),
-                                        child: Center(
-                                          child: Text(
-                                            mood[index]['emoji']!,
-                                            style: const TextStyle(
-                                              fontSize: 50,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  mood[index]['name']!,
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        );
-                      },
-                    );
-                  }
-                },
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 1.2,
+            colors: [
+              childSecondaryColor.withOpacity(0.3),
+              childBgColor,
+              Colors.white,
+            ],
+            stops: const [0.0, 0.5, 1.0],
+          ),
+        ),
+        child: SafeArea(
+          child: Column(
+            children: [
+              CustomAppbar(
+                title: tr(AppText.mood),
+                route: '/child_dashboard',
               ),
-            ),
-          ],
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: GridView.builder(
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      childAspectRatio: 0.85,
+                      mainAxisSpacing: 20,
+                      crossAxisSpacing: 20,
+                    ),
+                    itemCount: mood.length,
+                    itemBuilder: (context, index) {
+                      final moodItem = mood[index];
+                      final isSelected = selectedIndex == index;
+                      
+                      return GestureDetector(
+                        onTapDown: (_) {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                          _animationController.forward();
+                        },
+                        onTapUp: (_) {
+                          _animationController.reverse();
+                        },
+                        onTap: () async {
+                          await FirebaseManager.setCurrentMood(
+                            name: moodItem['name'],
+                            emoji: moodItem['emoji'],
+                          );
+                          if (mounted) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => MoodDetailScreen(
+                                  emoji: moodItem['emoji']!,
+                                  moodName: moodItem['name']!,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        child: AnimatedBuilder(
+                          animation: _scaleAnimation,
+                          builder: (context, child) {
+                            return Transform.scale(
+                              scale: _scaleAnimation.value,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                  boxShadow: isSelected
+                                      ? [
+                                          BoxShadow(
+                                            color: childPrimaryColor.withOpacity(0.3),
+                                            blurRadius: 15,
+                                            offset: const Offset(0, 8),
+                                          ),
+                                        ]
+                                      : [
+                                          BoxShadow(
+                                            color: Colors.grey.withOpacity(0.15),
+                                            blurRadius: 10,
+                                            offset: const Offset(0, 4),
+                                          ),
+                                        ],
+                                ),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      moodItem['emoji']!,
+                                      style: TextStyle(
+                                        fontSize: isSelected ? 70 : 60,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    Text(
+                                      moodItem['name']!,
+                                      style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold,
+                                        color: isSelected
+                                            ? childPrimaryColor
+                                            : Colors.grey.shade700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

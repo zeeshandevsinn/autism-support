@@ -26,7 +26,7 @@ class ToastUtil {
         context,
         message,
         Colors.red,
-        [const Color(0xFFff5f6d)],
+        [Colors.red.shade700, Colors.red.shade400],
       ),
       duration: const Duration(seconds: 2),
     );
