@@ -8,6 +8,12 @@
       "languageVersion": "3.2"
     },
     {
+      "name": "archive",
+      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/archive-3.6.1",
+      "packageUri": "lib/",
+      "languageVersion": "3.0"
+    },
+    {
       "name": "args",
       "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/args-2.5.0",
       "packageUri": "lib/",
@@ -378,6 +384,12 @@
       "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/lints-2.1.1",
       "packageUri": "lib/",
       "languageVersion": "3.0"
+    },
+    {
+      "name": "lottie",
+      "rootUri": "file:///C:/Users/ORACLE/AppData/Local/Pub/Cache/hosted/pub.dev/lottie-2.7.0",
+      "packageUri": "lib/",
+      "languageVersion": "3.1"
     },
     {
       "name": "matcher",

@@ -13,14 +13,14 @@ List<Map<String, dynamic>> learningData = [
         // "Cat"
         ,
         "image": "assets/cat.png",
-        "audio": "cat.mp3"
+        "audio": "Cat.mp3"
       },
       {
         "title": tr(AppText.dog)
         // "Dog"
         ,
         "image": "assets/dog.png",
-        "audio": "dog.mp3"
+        "audio": "Dog.mp3"
       },
       {
         "title": tr(AppText.zebra)
@@ -128,49 +128,49 @@ List<Map<String, dynamic>> learningData = [
         //  "Monday"
         ,
         "image": "assets/M.png",
-        "audio": "monday.mp3"
+        "audio": "Monday.mp3"
       },
       {
         "title": tr(AppText.tuesday)
         // "Tuesday"
         ,
         "image": "assets/T.png",
-        "audio": "tuesday.mp3"
+        "audio": "Tuesday.mp3"
       },
       {
         "title": tr(AppText.wednesday)
         // "Wednesday"
         ,
         "image": "assets/W.png",
-        "audio": "wednesday.mp3"
+        "audio": "Wednesday.mp3"
       },
       {
         "title": tr(AppText.thursday)
         // "Thursday"
         ,
         "image": "assets/T.png",
-        "audio": "thursday.mp3"
+        "audio": "Thursday.mp3"
       },
       {
         "title": tr(AppText.friday)
         // "Friday"
         ,
         "image": "assets/F.png",
-        "audio": "friday.mp3"
+        "audio": "Friday.mp3"
       },
       {
         "title": tr(AppText.saturday)
         // "Saturday"
         ,
         "image": "assets/S.png",
-        "audio": "saturday.mp3"
+        "audio": "Saturday.mp3"
       },
       {
         "title": tr(AppText.sunday)
         //  "Sunday"
         ,
         "image": "assets/S.png",
-        "audio": "sunday.mp3"
+        "audio": "Sunday.mp3"
       }
     ]
   },

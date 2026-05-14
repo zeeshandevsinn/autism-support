@@ -2,7 +2,7 @@ import "package:autism_support/utils/app_text.dart";
 import "package:autism_support/utils/colors.dart";
 import "package:easy_localization/easy_localization.dart";
 import "package:flutter/material.dart";
-import "package:flutter_tts/flutter_tts.dart";
+import "package:audioplayers/audioplayers.dart";
 
 class Conversation extends StatefulWidget {
   final dynamic data;
@@ -14,65 +14,62 @@ class Conversation extends StatefulWidget {
 }
 
 class _ConversationState extends State<Conversation> {
-  FlutterTts? _flutterTts;
-  bool _isTtsInitialized = false;
-  int? _speakingIndex;
-
-  @override
-  void initState() {
-    super.initState();
-    _initializeTts();
-  }
-
-  Future<void> _initializeTts() async {
-    try {
-      _flutterTts = FlutterTts();
-      await _flutterTts!.setLanguage(context.locale.languageCode == 'en' ? 'en' : 'ur');
-      await _flutterTts!.setPitch(1.0);
-      await _flutterTts!.setSpeechRate(0.5);
-      setState(() {
-        _isTtsInitialized = true;
-      });
-    } catch (e) {
-      print("TTS Initialization Error: $e");
-    }
-  }
-
-  Future<void> speak(String sentence, String languageCode, int index) async {
-    if (!_isTtsInitialized || _flutterTts == null) {
-      print("TTS not initialized");
-      return;
-    }
-    
-    try {
-      setState(() {
-        _speakingIndex = index;
-      });
-      
-      await _flutterTts!.setLanguage(languageCode);
-      await _flutterTts!.speak(sentence);
-      
-      // Add a delay to reset the speaking index
-      await Future.delayed(const Duration(milliseconds: 500));
-      
-      if (mounted) {
-        setState(() {
-          _speakingIndex = null;
-        });
-      }
-    } catch (e) {
-      print("Speak Error: $e");
-      setState(() {
-        _speakingIndex = null;
-      });
-    }
-  }
+  final AudioPlayer _audioPlayer = AudioPlayer();
+  int? _playingIndex;
+  bool _isPlaying = false;
 
   @override
   void dispose() {
-    _flutterTts?.stop();
-    _flutterTts = null;
+    _audioPlayer.dispose();
     super.dispose();
+  }
+
+  Future<void> _playAudio(String audioPath, int index) async {
+    try {
+      // Stop any currently playing audio
+      if (_isPlaying) {
+        await _audioPlayer.stop();
+        setState(() {
+          _isPlaying = false;
+          _playingIndex = null;
+        });
+      }
+      
+      setState(() {
+        _isPlaying = true;
+        _playingIndex = index;
+      });
+      
+      // Play the audio file
+      await _audioPlayer.play(AssetSource(audioPath));
+      
+      // Listen for completion
+      _audioPlayer.onPlayerComplete.listen((event) {
+        if (mounted) {
+          setState(() {
+            _isPlaying = false;
+            _playingIndex = null;
+          });
+        }
+      });
+      
+    } catch (e) {
+      print("Error playing audio: $e");
+      setState(() {
+        _isPlaying = false;
+        _playingIndex = null;
+      });
+      
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Could not play audio'),
+            backgroundColor: Colors.red,
+            duration: Duration(seconds: 1),
+          ),
+        );
+      }
+    }
   }
 
   @override
@@ -84,8 +81,8 @@ class _ConversationState extends State<Conversation> {
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              childSecondaryColor,      // Soft Pink (#FDA4AF)
-              childBgColor,             // Very Light Pink-White (#FEF2F2)
+              childSecondaryColor,
+              childBgColor,
               Colors.white,
             ],
             stops: const [0.0, 0.5, 1.0],
@@ -180,14 +177,15 @@ class _ConversationState extends State<Conversation> {
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                   itemCount: widget.data['data'].length,
                   itemBuilder: (BuildContext context, int index) {
-                    final isSpeaking = _speakingIndex == index;
+                    final isPlaying = _playingIndex == index;
                     final sentence = widget.data['data'][index]['sentence'].toString();
+                    final audioFile = widget.data['data'][index]['audio'].toString();
                     
                     return AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       margin: const EdgeInsets.only(bottom: 12),
                       decoration: BoxDecoration(
-                        color: isSpeaking 
+                        color: isPlaying 
                             ? childSecondaryColor.withOpacity(0.3)
                             : Colors.white,
                         borderRadius: BorderRadius.circular(20),
@@ -199,19 +197,20 @@ class _ConversationState extends State<Conversation> {
                           ),
                         ],
                         border: Border.all(
-                          color: isSpeaking
+                          color: isPlaying
                               ? childPrimaryColor
                               : childSecondaryColor.withOpacity(0.2),
-                          width: isSpeaking ? 1.5 : 1,
+                          width: isPlaying ? 1.5 : 1,
                         ),
                       ),
                       child: Material(
                         color: Colors.transparent,
                         child: InkWell(
                           onTap: () async {
-                            if (sentence.isNotEmpty) {
-                              String languageCode = context.locale.languageCode == 'en' ? 'en' : 'ur';
-                              await speak(sentence, languageCode, index);
+                            if (audioFile.isNotEmpty) {
+                              await _playAudio(audioFile, index);
+                            } else {
+                              print('No audio file for: $sentence');
                             }
                           },
                           borderRadius: BorderRadius.circular(20),
@@ -229,15 +228,15 @@ class _ConversationState extends State<Conversation> {
                                       gradient: LinearGradient(
                                         begin: Alignment.topLeft,
                                         end: Alignment.bottomRight,
-                                        colors: isSpeaking
+                                        colors: isPlaying
                                             ? [childPrimaryColor, childSecondaryColor]
                                             : [Colors.grey.shade300, Colors.grey.shade200],
                                       ),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Icon(
-                                      isSpeaking ? Icons.play_arrow : Icons.person_outline,
-                                      color: isSpeaking ? Colors.white : Colors.grey.shade600,
+                                      isPlaying ? Icons.play_arrow : Icons.volume_up,
+                                      color: isPlaying ? Colors.white : Colors.grey.shade600,
                                       size: 24,
                                     ),
                                   ),
@@ -250,9 +249,9 @@ class _ConversationState extends State<Conversation> {
                                   child: Text(
                                     sentence,
                                     style: TextStyle(
-                                      color: isSpeaking ? childPrimaryColor : Colors.black87,
+                                      color: isPlaying ? childPrimaryColor : Colors.black87,
                                       fontSize: 18,
-                                      fontWeight: isSpeaking ? FontWeight.w600 : FontWeight.w500,
+                                      fontWeight: isPlaying ? FontWeight.w600 : FontWeight.w500,
                                       height: 1.3,
                                     ),
                                     maxLines: 3,
@@ -260,21 +259,32 @@ class _ConversationState extends State<Conversation> {
                                   ),
                                 ),
                                 
-                                // Audio Icon
-                                Container(
-                                  padding: const EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: isSpeaking
-                                        ? childPrimaryColor.withOpacity(0.1)
-                                        : childSecondaryColor.withOpacity(0.1),
-                                    shape: BoxShape.circle,
+                                // Audio Indicator
+                                if (isPlaying)
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    child: const SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(childPrimaryColor),
+                                      ),
+                                    ),
+                                  )
+                                else
+                                  Container(
+                                    padding: const EdgeInsets.all(8),
+                                    decoration: BoxDecoration(
+                                      color: childSecondaryColor.withOpacity(0.1),
+                                      shape: BoxShape.circle,
+                                    ),
+                                    child: const Icon(
+                                      Icons.play_arrow,
+                                      color: childSecondaryColor,
+                                      size: 24,
+                                    ),
                                   ),
-                                  child: Icon(
-                                    isSpeaking ? Icons.speaker : Icons.volume_up,
-                                    color: isSpeaking ? childPrimaryColor : childSecondaryColor,
-                                    size: 24,
-                                  ),
-                                ),
                               ],
                             ),
                           ),

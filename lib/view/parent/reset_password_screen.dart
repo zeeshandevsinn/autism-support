@@ -15,162 +15,160 @@ class ResetPasswordScreen extends StatefulWidget {
 
 class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   var passwordController = TextEditingController();
-
-  var confirmPassworController = TextEditingController();
+  var confirmPasswordController = TextEditingController();
+  bool isPasswordVisible = false;
+  bool isConfirmPasswordVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    Size s = MediaQuery.of(context).size;
     return Scaffold(
-       backgroundColor: parentBgColor,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-        child: Column(
-          children: [
-            Row(
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: RadialGradient(
+            center: Alignment.topCenter,
+            radius: 1.2,
+            colors: [
+              parentSecondaryColor.withOpacity(0.15),
+              commonBgColor,
+              Colors.white,
+            ],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ForgetPasswordScreen()));
-                    },
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      size: 30,
-                    )),
-                SizedBox(
-                  width: s.width * 0.2,
+                // Back Button
+                InkWell(
+                  onTap: () => Navigator.pop(context),
+                  borderRadius: BorderRadius.circular(30),
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: parentPrimaryColor.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: const Icon(Icons.arrow_back, color: parentPrimaryColor),
+                  ),
                 ),
-                Text(
-                    tr(AppText.resetPassword)
-                    // "Reset password"
-                    ,
-                    style:
-                        const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                const Spacer(),
+                
+                // Title
+                Center(
+                  child: Column(
+                    children: [
+                      const Icon(Icons.lock_reset, size: 80, color: parentPrimaryColor),
+                      const SizedBox(height: 16),
+                      Text(
+                        tr(AppText.resetPassword),
+                        style: TextStyle(
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                          color: parentPrimaryColor,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        "Create your new password",
+                        style: TextStyle(color: Colors.grey.shade600),
+                      ),
+                    ],
+                  ),
+                ),
+                
+                const Spacer(),
+                
+                // Password Fields
+                Card(
+                  elevation: 4,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: passwordController,
+                          obscureText: !isPasswordVisible,
+                          decoration: InputDecoration(
+                            labelText: tr(AppText.newPassword),
+                            prefixIcon: const Icon(Icons.lock_outline),
+                            suffixIcon: IconButton(
+                              icon: Icon(isPasswordVisible ? Icons.visibility_off : Icons.visibility),
+                              onPressed: () => setState(() => isPasswordVisible = !isPasswordVisible),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: parentPrimaryColor, width: 2),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: confirmPasswordController,
+                          obscureText: !isConfirmPasswordVisible,
+                          decoration: InputDecoration(
+                            labelText: tr(AppText.confirmNewPassword),
+                            prefixIcon: const Icon(Icons.lock_outline),
+                            suffixIcon: IconButton(
+                              icon: Icon(isConfirmPasswordVisible ? Icons.visibility_off : Icons.visibility),
+                              onPressed: () => setState(() => isConfirmPasswordVisible = !isConfirmPasswordVisible),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: parentPrimaryColor, width: 2),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 30),
+                
+                // Submit Button
+                ElevatedButton(
+                  onPressed: () async {
+                    if (passwordController.text != confirmPasswordController.text) {
+                      ToastUtil.showErrorToast("Passwords do not match");
+                      return;
+                    }
+                    try {
+                      await FirebaseAuth.instance.confirmPasswordReset(
+                        code: "", 
+                        newPassword: passwordController.text,
+                      );
+                      ToastUtil.showSuccessToast(tr(AppText.successfullyResetPassword));
+                      Navigator.pop(context);
+                    } catch (error) {
+                      ToastUtil.showErrorToast(error.toString());
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: parentPrimaryColor,
+                    minimumSize: const Size(double.infinity, 55),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  ),
+                  child: Text(
+                    tr(AppText.submit),
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                
+                const Spacer(),
               ],
             ),
-            SizedBox(
-              height: s.height * 0.06,
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                  tr(AppText.newPassword)
-                  // "New Password"
-                  ,
-                  style: const TextStyle(
-                      color: Color(0xff491b6d),
-                      fontSize: 17,
-                      fontFamily: "Roboto",
-                      fontWeight: FontWeight.w600)),
-            ),
-            SizedBox(
-              height: s.height * 0.02,
-            ),
-            TextField(
-              obscureText: true,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Roboto"),
-              controller: passwordController,
-              keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.visibility_off_outlined)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Color(0xff491b6d), width: 2),
-                      borderRadius: BorderRadius.circular(8)),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(8)),
-                  hintText: tr(AppText.enterPassword)
-                  // "Enter Password"
-                  ,
-                  hintStyle: const TextStyle(
-                      color: Color(0xff4B4B4B), fontWeight: FontWeight.w400)),
-            ),
-            SizedBox(
-              height: s.height * 0.05,
-            ),
-            Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                  tr(AppText.confirmNewPassword)
-                  // "Confirm New Password"
-                  ,
-                  style: const TextStyle(
-                      color: Color(0xff491b6d),
-                      fontSize: 17,
-                      fontFamily: "Roboto",
-                      fontWeight: FontWeight.w600)),
-            ),
-            SizedBox(
-              height: s.height * 0.02,
-            ),
-            TextField(
-              obscureText: true,
-              style: const TextStyle(
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  fontFamily: "Roboto"),
-              controller: confirmPassworController,
-              keyboardType: TextInputType.visiblePassword,
-              decoration: InputDecoration(
-                  suffixIcon: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.visibility_off_outlined)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(color: Color(0xff491b6d), width: 2),
-                      borderRadius: BorderRadius.circular(8)),
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1),
-                      borderRadius: BorderRadius.circular(8)),
-                  hintText: tr(AppText.confirmPassword)
-                  // "Confirm Password"
-                  ,
-                  hintStyle: const TextStyle(color: Color(0xff4B4B4B))),
-            ),
-            SizedBox(
-              height: s.height * 0.12,
-            ),
-            InkWell(
-              onTap: () async {
-                try {
-                  await FirebaseAuth.instance.confirmPasswordReset(
-                      code: "", newPassword: passwordController.text);
-                  ToastUtil.showSuccessToast(
-                      tr(AppText.successfullyResetPassword)
-                      // "Successfully Reset Password"
-                      );
-                } catch (error) {
-                  ToastUtil.showErrorToast(error.toString());
-                }
-              },
-              child: Container(
-                height: s.height * 0.07,
-                width: s.height,
-                decoration: BoxDecoration(
-                    color: const Color(0xff491b6d),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Center(
-                    child: Text(
-                  // "Submit"\
-                  tr(AppText.submit),
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600),
-                )),
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );

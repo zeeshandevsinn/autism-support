@@ -106,6 +106,7 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
 
                 // Child Profile Section
                 StreamBuilder(
+                  key: ValueKey('child_stream_${DateTime.now().millisecondsSinceEpoch}'),
                   stream: db
                       .collection(childCollection)
                       .doc(UserSession.getUID())
@@ -237,7 +238,6 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
                 SizedBox(height: s.height * 0.03),
 
                 // Menu Cards Section
-                // Menu Cards Section - All cards same size
                 Column(
                   children: [
                     Row(
@@ -308,146 +308,169 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
 
   // Helper method for Add Child Card
   Widget _buildAddChildCard(BuildContext context) {
-  return InkWell(
-    onTap: () {
-      addAlert(context, const AddChildScreen(), 'child');
-    },
-    child: Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: parentPrimaryColor,
-          width: 2,
-          style: BorderStyle.solid,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: parentPrimaryColor.withOpacity(0.15),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
+    return InkWell(
+      onTap: () async {
+        // Show the dialog and wait for result
+        final result = await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const AddChildScreen(),
+        );
+        
+        // If child was added successfully, refresh the screen
+        if (result == true && mounted) {
+          setState(() {
+            // This will trigger StreamBuilder to rebuild
+          });
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: parentPrimaryColor,
+            width: 2,
+            style: BorderStyle.solid,
           ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      parentPrimaryColor,
-                      parentSecondaryColor,
-                    ],
-                  ),
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Icon(
-                  Icons.child_care,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 12),
-              Text(
-                tr(AppText.addChild),
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: parentPrimaryColor,
-                ),
-              ),
-            ],
-          ),
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: parentPrimaryColor.withOpacity(0.1),
-              shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: parentPrimaryColor.withOpacity(0.15),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
-            child: Icon(
-              Icons.arrow_forward_ios,
-              color: parentPrimaryColor,
-              size: 18,
-            ),
-          ),
-        ],
-      ),
-    ),
-  );
-}
-
-  // Helper method for No Child Data Card
- Widget _buildNoChildDataCard(BuildContext context) {
-  return InkWell(
-    onTap: () {
-      addAlert(context, const AddChildScreen(), 'child');
-    },
-    child: Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            parentPrimaryColor,
-            parentSecondaryColor,
           ],
         ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: parentPrimaryColor.withOpacity(0.3),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
-              shape: BoxShape.circle,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        parentPrimaryColor,
+                        parentSecondaryColor,
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(
+                    Icons.child_care,
+                    color: Colors.white,
+                    size: 20,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                Text(
+                  tr(AppText.addChild),
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: parentPrimaryColor,
+                  ),
+                ),
+              ],
             ),
-            child: const Icon(
-              Icons.child_care,
-              color: Colors.white,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              tr(AppText.noChildData),
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-                color: Colors.white,
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: parentPrimaryColor.withOpacity(0.1),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.arrow_forward_ios,
+                color: parentPrimaryColor,
+                size: 18,
               ),
             ),
-          ),
-          const Icon(
-            Icons.arrow_forward_ios,
-            color: Colors.white,
-            size: 16,
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
-}
+    );
+  }
+
+  // Helper method for No Child Data Card
+  Widget _buildNoChildDataCard(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        // Show the dialog and wait for result
+        final result = await showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) => const AddChildScreen(),
+        );
+        
+        // If child was added successfully, refresh the screen
+        if (result == true && mounted) {
+          setState(() {
+            // This will trigger StreamBuilder to rebuild
+          });
+        }
+      },
+      child: Container(
+        width: double.infinity,
+        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [
+              parentPrimaryColor,
+              parentSecondaryColor,
+            ],
+          ),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: parentPrimaryColor.withOpacity(0.3),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(6),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.2),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.child_care,
+                color: Colors.white,
+                size: 24,
+              ),
+            ),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                tr(AppText.noChildData),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: Colors.white,
+              size: 16,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
   // Helper method for Menu Cards
-  // Helper method for Menu Cards with Gradient - Fixed Size
   Widget _buildMenuCard({
     required String title,
     String? subtitle,
@@ -458,15 +481,15 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Container(
-        height: 140, // Fixed height for all cards
+        height: 140,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: [
-              parentPrimaryColor, // Deep Navy
-              parentSecondaryColor, // Ocean Blue
+              parentPrimaryColor,
+              parentSecondaryColor,
             ],
           ),
           borderRadius: BorderRadius.circular(16),
@@ -502,8 +525,6 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
                 fontWeight: FontWeight.bold,
                 fontSize: 16,
               ),
-              // maxLines: 1,
-              // overflow: TextOverflow.ellipsis,
             ),
             if (subtitle != null) ...[
               const SizedBox(height: 10),

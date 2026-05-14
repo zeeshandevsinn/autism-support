@@ -9,92 +9,103 @@ class PassworResetSuccesfullyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Size s = MediaQuery.of(context).size;
     return Scaffold(
-       backgroundColor: parentBgColor,
-      body: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 30),
-        child: Column(
-          children: [
-            Align(
-                alignment: Alignment.topRight,
-                child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const ResetPasswordScreen()));
-                    },
-                    icon: const Icon(
-                      Icons.cancel,
-                      size: 35,
-                    ))),
-            SizedBox(
-              height: s.height * 0.02,
-            ),
-            Text(
-              tr(AppText.passwordResetSuccessfull)
-              // "Password reset successfull"
-              ,
-              style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
-                fontFamily: "Roboto",
-              ),
-            ),
-            SizedBox(
-              height: s.height * 0.01,
-            ),
-            RichText(
-                textAlign: TextAlign.center,
-                text: TextSpan(children: [
-                  TextSpan(
-                      text: tr(AppText.youCanNowLoginWithYourNewPassword)
-                      // "You can now login with your new password."
-                      ,
-                      style: const TextStyle(
-                          color: Color(0xff4B4B4B),
-                          fontSize: 20,
-                          fontFamily: "Roboto"))
-                ])),
-            SizedBox(
-              height: s.height * 0.1,
-            ),
-            InkWell(
-              child: Container(
-                height: s.height * 0.07,
-                width: s.height,
-                decoration: BoxDecoration(
-                    color: const Color(0xff491b6d),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.send,
-                        color: Colors.white,
-                        size: 25,
-                      ),
-                      SizedBox(
-                        width: s.width * 0.02,
-                      ),
-                      Text(
-                        tr(AppText.proceed)
-                        // "Proceed"
-                        ,
-                        style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w600),
-                      ),
-                    ],
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [commonBgColor, Colors.white],
+          ),
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                // Close Button
+                Align(
+                  alignment: Alignment.topRight,
+                  child: IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(Icons.close, color: Colors.grey.shade400, size: 28),
                   ),
                 ),
-              ),
+                
+                const Expanded(child: SizedBox()),
+                
+                // Success Icon
+                CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.green.shade50,
+                  child: Icon(
+                    Icons.check_rounded,
+                    size: 60,
+                    color: Colors.green.shade600,
+                  ),
+                ),
+                
+                const SizedBox(height: 32),
+                
+                // Title
+                Text(
+                  tr(AppText.passwordResetSuccessfull),
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: parentPrimaryColor,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                
+                const SizedBox(height: 16),
+                
+                // Message
+                Text(
+                  tr(AppText.youCanNowLoginWithYourNewPassword),
+                  style: TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey.shade600,
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                
+                const Expanded(child: SizedBox()),
+                
+                // Proceed Button
+                SizedBox(
+                  width: double.infinity,
+                  height: 55,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ResetPasswordScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: parentPrimaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                    child: Text(
+                      tr(AppText.proceed),
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                
+                const SizedBox(height: 20),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

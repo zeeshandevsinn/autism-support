@@ -18,6 +18,7 @@
         "flutter_svg",
         "flutter_tts",
         "image_picker",
+        "lottie",
         "overlay_support",
         "pinput",
         "provider",
@@ -51,6 +52,16 @@
         "stack_trace",
         "stream_channel",
         "test_api",
+        "vector_math"
+      ]
+    },
+    {
+      "name": "lottie",
+      "version": "2.7.0",
+      "dependencies": [
+        "archive",
+        "flutter",
+        "path",
         "vector_math"
       ]
     },
@@ -316,6 +327,14 @@
         "stream_channel",
         "string_scanner",
         "term_glyph"
+      ]
+    },
+    {
+      "name": "archive",
+      "version": "3.6.1",
+      "dependencies": [
+        "crypto",
+        "path"
       ]
     },
     {
@@ -814,6 +833,13 @@
       ]
     },
     {
+      "name": "crypto",
+      "version": "3.0.3",
+      "dependencies": [
+        "typed_data"
+      ]
+    },
+    {
       "name": "plugin_platform_interface",
       "version": "2.1.8",
       "dependencies": [
@@ -847,13 +873,6 @@
       "name": "sprintf",
       "version": "7.0.0",
       "dependencies": []
-    },
-    {
-      "name": "crypto",
-      "version": "3.0.3",
-      "dependencies": [
-        "typed_data"
-      ]
     },
     {
       "name": "path_provider_windows",

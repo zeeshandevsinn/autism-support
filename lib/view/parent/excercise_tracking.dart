@@ -105,19 +105,51 @@ class ExcerciseTracking extends StatelessWidget {
                     var obtained = documents['obtained'] ?? 0;
                     var total = documents['total'] ?? 0;
                     var percentage = total > 0 ? (obtained / total) * 100 : 0;
+                    var exerciseType = excerciseData[index]['type'];
+                    var documentId = documents.id;
                     
                     return _buildExerciseCard(
                       context: context,
-                      title: documents.id,
+                      title: documentId,
                       obtained: obtained,
                       total: total,
                       percentage: percentage,
-                      exerciseType: excerciseData[index]['type'],
+                      exerciseType: exerciseType,
+                      documentId: documentId,
                       onReset: () async {
-                        await FirebaseManager.udpateObtainedMarks(
-                          drillType: excerciseData[index]['type'],
-                          obtained: 0,
-                        );
+                        try {
+                          // Show loading indicator
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Resetting $documentId...'),
+                              backgroundColor: Colors.orange,
+                              duration: const Duration(seconds: 1),
+                            ),
+                          );
+                          
+                          // Reset the obtained marks to 0
+                          await FirebaseManager.udpateObtainedMarks(
+                            drillType: exerciseType,
+                            obtained: 0,
+                          );
+                          
+                          // Show success message
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('$documentId reset successfully!'),
+                              backgroundColor: Colors.green,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        } catch (e) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('Error resetting $documentId: $e'),
+                              backgroundColor: Colors.red,
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
                       },
                     );
                   },
@@ -137,13 +169,13 @@ class ExcerciseTracking extends StatelessWidget {
     required int total,
     required double percentage,
     required String exerciseType,
+    required String documentId,
     required VoidCallback onReset,
   }) {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: parentBgColor, 
-        
+        color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -295,7 +327,6 @@ class ExcerciseTracking extends StatelessWidget {
                         alignment: Alignment.center,
                         children: [
                           CircularProgressIndicator(
-                            
                             value: percentage / 100,
                             backgroundColor: Colors.grey.shade200,
                             valueColor: AlwaysStoppedAnimation<Color>(
@@ -385,6 +416,20 @@ class ExcerciseTracking extends StatelessWidget {
         return Icons.visibility;
       case 'sorting':
         return Icons.sort;
+      case 'alphabet':
+        return Icons.text_fields;
+      case 'colors':
+        return Icons.color_lens;
+      case 'fruits':
+        return Icons.apple;
+      case 'animals':
+        return Icons.pets;
+      case 'vegetables':
+        return Icons.emoji_food_beverage;
+      case 'vehicles':
+        return Icons.directions_car;
+      case 'emotions':
+        return Icons.emoji_emotions;
       default:
         return Icons.fitness_center;
     }
