@@ -71,31 +71,50 @@ class FirebaseManager {
     }
   }
 
+  // FIXED: addChildDB - Now saves under Parent's collection
   static addChildDB({
     required name,
     required age,
     required File image,
   }) async {
     try {
+      String? parentId = UserSession.getUID();
+      
+      if (parentId == null) {
+        print("ERROR: Parent UID is null");
+        return false;
+      }
+      
+      print("Adding child for parent: $parentId");
+      
       var fileImage = await getStringImage(image);
-      await db.collection(childCollection).doc(UserSession.getUID()).set({
+      
+      // FIXED: Save child under Parent's collection
+      await db
+          .collection(ParentCollection)  // ParentCollection
+          .doc(parentId)                 // Parent document
+          .collection(childCollection)   // child sub-collection
+          .add({                          // Add new child document
         "name": name,
         "age": age,
         "image": fileImage,
+        "parentId": parentId,
+        "createdAt": FieldValue.serverTimestamp(),
         "current_mood": {
           "name": "Happy",
           "emoji": "😊",
         }
       });
+      
+      print("Child added successfully!");
 
-      // debugger();
+      // Add exercise data for this child
       for (var index in excerciseData) {
         String type = index['type'];
         int obtained = 0;
         int total = index['data'].length;
         var cardImage = index['card_image'];
 
-        print(type.runtimeType);
         await drillMarks(
             drillType: type,
             obtained: obtained,
@@ -149,16 +168,41 @@ class FirebaseManager {
     }
   }
 
+  // FIXED: drillMarks - Now saves under Parent's child collection
   static drillMarks(
       {required drillType,
       required obtained,
       required total,
       required image}) async {
     try {
-      // var fileImage = await getStringImage(image);
-      final marks = db
+      String? parentId = UserSession.getUID();
+      
+      if (parentId == null) {
+        print("ERROR: Parent UID is null");
+        return false;
+      }
+      
+      // First, get the child document ID
+      var childQuery = await db
+          .collection(ParentCollection)
+          .doc(parentId)
           .collection(childCollection)
-          .doc(UserSession.getUID())
+          .limit(1)
+          .get();
+      
+      if (childQuery.docs.isEmpty) {
+        print("No child found for parent");
+        return false;
+      }
+      
+      String childId = childQuery.docs.first.id;
+      
+      // Save marks under child's sub-collection
+      final marks = db
+          .collection(ParentCollection)
+          .doc(parentId)
+          .collection(childCollection)
+          .doc(childId)
           .collection('marks')
           .doc(drillType);
 
@@ -171,14 +215,39 @@ class FirebaseManager {
     }
   }
 
+  // FIXED: udpateObtainedMarks
   static udpateObtainedMarks({
     required drillType,
     required obtained,
   }) async {
     try {
-      final marks = db
+      String? parentId = UserSession.getUID();
+      
+      if (parentId == null) {
+        print("ERROR: Parent UID is null");
+        return false;
+      }
+      
+      // First, get the child document ID
+      var childQuery = await db
+          .collection(ParentCollection)
+          .doc(parentId)
           .collection(childCollection)
-          .doc(UserSession.getUID())
+          .limit(1)
+          .get();
+      
+      if (childQuery.docs.isEmpty) {
+        print("No child found for parent");
+        return false;
+      }
+      
+      String childId = childQuery.docs.first.id;
+      
+      final marks = db
+          .collection(ParentCollection)
+          .doc(parentId)
+          .collection(childCollection)
+          .doc(childId)
           .collection('marks')
           .doc(drillType);
 
@@ -194,27 +263,82 @@ class FirebaseManager {
     }
   }
 
+  // FIXED: getObtainedMarks
   static getObtainedMarks({required type}) async {
     try {
-      var data = await db
+      String? parentId = UserSession.getUID();
+      
+      if (parentId == null) {
+        print("ERROR: Parent UID is null");
+        return null;
+      }
+      
+      // First, get the child document ID
+      var childQuery = await db
+          .collection(ParentCollection)
+          .doc(parentId)
           .collection(childCollection)
-          .doc(UserSession.getUID())
+          .limit(1)
+          .get();
+      
+      if (childQuery.docs.isEmpty) {
+        print("No child found for parent");
+        return null;
+      }
+      
+      String childId = childQuery.docs.first.id;
+      
+      var data = await db
+          .collection(ParentCollection)
+          .doc(parentId)
+          .collection(childCollection)
+          .doc(childId)
           .collection('marks')
           .doc(type)
           .get();
+          
       if (data.exists) {
         var obtained = data.data()?['obtained'];
         print('Obtained Marks: $obtained');
         return obtained;
       }
+      return null;
     } catch (e) {
       print('Error fetching obtained marks: $e');
+      return null;
     }
   }
 
   static setCurrentMood({required name, required emoji}) async {
     try {
-      await db.collection(childCollection).doc(UserSession.getUID()).update({
+      String? parentId = UserSession.getUID();
+      
+      if (parentId == null) {
+        print("ERROR: Parent UID is null");
+        return;
+      }
+      
+      // First, get the child document ID
+      var childQuery = await db
+          .collection(ParentCollection)
+          .doc(parentId)
+          .collection(childCollection)
+          .limit(1)
+          .get();
+      
+      if (childQuery.docs.isEmpty) {
+        print("No child found for parent");
+        return;
+      }
+      
+      String childId = childQuery.docs.first.id;
+      
+      await db
+          .collection(ParentCollection)
+          .doc(parentId)
+          .collection(childCollection)
+          .doc(childId)
+          .update({
         "current_mood": {
           "name": name,
           "emoji": emoji,

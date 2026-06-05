@@ -277,7 +277,7 @@ List<Map<String, dynamic>> learningData = [
         // "Apple"
         ,
         "image": "assets/apple.png",
-        "audio": "apple.mp3"
+        "audio": "Apple.mp3"
       },
       {
         "title": tr(AppText.banana)

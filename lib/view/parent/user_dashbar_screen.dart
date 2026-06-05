@@ -104,134 +104,153 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
 
                 SizedBox(height: s.height * 0.02),
 
-                // Child Profile Section
-                StreamBuilder(
-                  key: ValueKey('child_stream_${DateTime.now().millisecondsSinceEpoch}'),
+                // Child Profile Section - FIXED
+                StreamBuilder<QuerySnapshot>(
                   stream: db
-                      .collection(childCollection)
+                      .collection(ParentCollection)
                       .doc(UserSession.getUID())
+                      .collection(childCollection)
                       .snapshots(),
                   builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      final DocumentSnapshot<Object?> data = snapshot.data!;
-                      var userData = data.data();
-                      if (userData != null) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(20),
-                            boxShadow: [
-                              BoxShadow(
-                                color: parentPrimaryColor.withOpacity(0.1),
-                                blurRadius: 10,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      data.get("name"),
-                                      style: const TextStyle(
-                                        color: parentPrimaryColor,
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                    const SizedBox(height: 4),
-                                    Text(
-                                      "${tr(AppText.age)}: ${data.get("age")}",
-                                      style: TextStyle(
-                                        color: parentTextColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundImage: MemoryImage(
-                                  base64Decode(data.get("image")),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      } else {
-                        return _buildAddChildCard(context);
-                      }
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          valueColor: AlwaysStoppedAnimation<Color>(parentPrimaryColor),
+                        ),
+                      );
                     }
-                  },
-                ),
 
-                SizedBox(height: s.height * 0.02),
+                    if (snapshot.hasError) {
+                      return Center(
+                        child: Text(
+                          'Error: ${snapshot.error}',
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                      );
+                    }
 
-                // Current Mood Section
-                StreamBuilder(
-                  stream: db
-                      .collection(childCollection)
-                      .doc(UserSession.getUID())
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData && snapshot.data != null) {
-                      final DocumentSnapshot<Object?> data = snapshot.data!;
-                      var userData = data.data();
-                      if (userData != null) {
-                        return Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: parentSecondaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(
-                              color: parentSecondaryColor.withOpacity(0.2),
-                            ),
+                    // Check if any child exists
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                      return _buildAddChildCard(context);
+                    }
+
+                    // Get the first child
+                    var children = snapshot.data!.docs;
+                    var childDoc = children[0];
+                    var childData = childDoc.data() as Map<String, dynamic>;
+
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        boxShadow: [
+                          BoxShadow(
+                            color: parentPrimaryColor.withOpacity(0.1),
+                            blurRadius: 10,
+                            offset: const Offset(0, 2),
                           ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "${data.get('name')} ${tr(AppText.todayIAmFeeling)} ${data.get('current_mood')['name']}",
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  childData['name'] ?? 'No Name',
                                   style: const TextStyle(
+                                    color: parentPrimaryColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  "${tr(AppText.age)}: ${childData['age'] ?? 'N/A'}",
+                                  style: TextStyle(
                                     color: parentTextColor,
                                     fontSize: 14,
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ),
-                              Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                                child: Text(
-                                  data.get('current_mood')['emoji'],
-                                  style: const TextStyle(fontSize: 32),
-                                ),
-                              ),
-                            ],
+                              ],
+                            ),
                           ),
-                        );
-                      } else {
-                        return _buildNoChildDataCard(context);
-                      }
-                    } else {
+                          CircleAvatar(
+                            radius: 30,
+                            backgroundImage: childData['image'] != null
+                                ? MemoryImage(base64Decode(childData['image']))
+                                : null,
+                            child: childData['image'] == null
+                                ? const Icon(Icons.person, size: 30)
+                                : null,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+
+                SizedBox(height: s.height * 0.02),
+
+                // Current Mood Section - FIXED
+                StreamBuilder<QuerySnapshot>(
+                  stream: db
+                      .collection(ParentCollection)
+                      .doc(UserSession.getUID())
+                      .collection(childCollection)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                       return const SizedBox.shrink();
                     }
+
+                    var children = snapshot.data!.docs;
+                    var childDoc = children[0];
+                    var childData = childDoc.data() as Map<String, dynamic>;
+
+                    return Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: parentSecondaryColor.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: parentSecondaryColor.withOpacity(0.2),
+                        ),
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: Text(
+                              "${childData['name'] ?? 'Child'} ${tr(AppText.todayIAmFeeling)} ${childData['current_mood']?['name'] ?? 'Happy'}",
+                              style: const TextStyle(
+                                color: parentTextColor,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50),
+                            ),
+                            child: Text(
+                              childData['current_mood']?['emoji'] ?? '😊',
+                              style: const TextStyle(fontSize: 32),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
                   },
                 ),
 
@@ -319,9 +338,7 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
         
         // If child was added successfully, refresh the screen
         if (result == true && mounted) {
-          setState(() {
-            // This will trigger StreamBuilder to rebuild
-          });
+          setState(() {});
         }
       },
       child: Container(
@@ -407,9 +424,7 @@ class _UserDashbarScreenState extends State<UserDashbarScreen> {
         
         // If child was added successfully, refresh the screen
         if (result == true && mounted) {
-          setState(() {
-            // This will trigger StreamBuilder to rebuild
-          });
+          setState(() {});
         }
       },
       child: Container(

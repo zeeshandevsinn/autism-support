@@ -45,16 +45,16 @@ class _ChildDashboardState extends State<ChildDashboard> {
     return SafeArea(
       child: Scaffold(
         body: Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
-                childSecondaryColor,      // Soft Pink (#FDA4AF)
-                childBgColor,             // Very Light Pink-White (#FEF2F2)
+                childSecondaryColor,
+                childBgColor,
                 Colors.white,
               ],
-              stops: const [0.0, 0.5, 1.0],
+              stops: [0.0, 0.5, 1.0],
             ),
           ),
           child: Padding(
@@ -66,33 +66,29 @@ class _ChildDashboardState extends State<ChildDashboard> {
                   children: [
                     StreamBuilder(
                       stream: db
-                          .collection(childCollection)
+                          .collection(ParentCollection)  // FIXED: Get child from parent collection
                           .doc(UserSession.getUID())
+                          .collection(childCollection)
                           .snapshots(),
                       builder: (context, snapshot) {
-                        if (snapshot.hasData && snapshot.data != null) {
-                          DocumentSnapshot data = snapshot.data!;
-                          var userData = data.data();
-                          print(userData);
-                          if (userData != null) {
-                            return CustomAppbar(
-                              title: data.get('name'),
-                              color: childPrimaryColor,
-                              route: '/home',
-                              trailing: Text(
-                                data.get('current_mood')['emoji'],
-                                style: const TextStyle(fontSize: 50),
-                              ),
-                            );
-                          } else {
-                            return CustomAppbar(
-                              title: tr(AppText.child),
-                              route: '/home',
-                              color: childPrimaryColor,
-                            );
-                          }
+                        if (snapshot.hasData && snapshot.data!.docs.isNotEmpty) {
+                          var childDoc = snapshot.data!.docs.first;
+                          var childData = childDoc.data() as Map<String, dynamic>;
+                          return CustomAppbar(
+                            title: childData['name'] ?? tr(AppText.child),
+                            color: childPrimaryColor,
+                            route: '/home',
+                            trailing: Text(
+                              childData['current_mood']?['emoji'] ?? '😊',
+                              style: const TextStyle(fontSize: 50),
+                            ),
+                          );
                         } else {
-                          return const CircularProgressIndicator();
+                          return CustomAppbar(
+                            title: tr(AppText.child),
+                            route: '/home',
+                            color: childPrimaryColor,
+                          );
                         }
                       },
                     ),
@@ -105,7 +101,7 @@ class _ChildDashboardState extends State<ChildDashboard> {
                           childAspectRatio: 0.8,
                         ),
                         itemCount: dashboard.length - 1,
-                        itemBuilder: (BuildContext context, index) {
+                        itemBuilder: (BuildContext context, int index) {
                           String routeName;
                           switch (index) {
                             case 0:
@@ -134,7 +130,7 @@ class _ChildDashboardState extends State<ChildDashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
                                 child: Text(
-                                  "${dashboard[index]['title']}",
+                                  dashboard[index]['title'],
                                   style: TextStyle(
                                     fontSize: 25,
                                     color: childPrimaryColor,
@@ -148,26 +144,76 @@ class _ChildDashboardState extends State<ChildDashboard> {
                         },
                       ),
                     ),
+                    // Family Card - Fixed (No video icon)
                     Column(
                       children: [
-                        FamilyCard(
-                          image: AssetImage(dashboard[4]['image']),
+                        GestureDetector(
                           onTap: () {
                             Navigator.pushNamed(context, '/family_members');
                           },
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(4.0),
-                          child: Text(
-                            "${dashboard[4]['title']}",
-                            style: TextStyle(
-                              fontSize: 25,
-                              color: childPrimaryColor,
-                              fontWeight: FontWeight.bold,
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                                colors: [
+                                  childPrimaryColor,
+                                  childSecondaryColor,
+                                ],
+                              ),
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: childPrimaryColor.withOpacity(0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
                             ),
-                            textAlign: TextAlign.center,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Stack(
+                                fit: StackFit.expand,
+                                children: [
+                                  // Background Image
+                                  Image.asset(
+                                    dashboard[4]['image'],
+                                    fit: BoxFit.cover,
+                                  ),
+                                  // Gradient Overlay
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.bottomCenter,
+                                        end: Alignment.topCenter,
+                                        colors: [
+                                          Colors.black.withOpacity(0.6),
+                                          Colors.transparent,
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  // Title Overlay
+                                  Positioned(
+                                    bottom: 16,
+                                    left: 16,
+                                    right: 16,
+                                    child: Text(
+                                      dashboard[4]['title'],
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ],
